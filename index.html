@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laura Victoria Herrera M. — Arquitecta · Diseño urbano y arquitectónico</title>
+  <meta name="description" content="Portafolio de Laura Victoria Herrera M., arquitecta bilingüe en Bucaramanga (Colombia). Diseño urbano, espacio público, proyectos de salud y educación, coordinación BIM. Contáctame por WhatsApp." />
+  <meta name="author" content="Laura Victoria Herrera M." />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Laura Victoria Herrera M. — Arquitecta" />
+  <meta property="og:description" content="Diseño urbano y arquitectónico con impacto comunitario. Bucaramanga, Colombia." />
+  <meta property="og:image" content="assets/portfolio/cover.jpg" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23171717'/%3E%3Ctext x='50' y='70' font-family='Archivo,sans-serif' font-size='60' font-weight='700' fill='%23fff' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Compiled Tailwind CSS (self-contained, no runtime CDN) -->
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <style>
+    html { font-family: 'Space Grotesk', system-ui, sans-serif; }
+    .font-display { font-family: 'Archivo', system-ui, sans-serif; }
+
+    /* Oversized statement type */
+    .headline {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 0.92;
+    }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease-out, transform .6s ease-out; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* Hide scrollbar on gallery strip */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Underline-on-hover nav link */
+    .navlink { position: relative; }
+    .navlink::after {
+      content: ''; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0;
+      background: currentColor; transition: width .25s ease;
+    }
+    .navlink:hover::after, .navlink:focus-visible::after { width: 100%; }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+
+<body class="bg-white text-ink antialiased selection:bg-gold selection:text-white">
+
+  <!-- Skip link -->
+  <a href="#main" data-i18n="skip" class="sr-only focus:not-sr-only focus:absolute focus:z-[200] focus:top-3 focus:left-3 focus:bg-ink focus:text-white focus:px-4 focus:py-2 focus:rounded">Saltar al contenido</a>
+
+  <!-- ======================= HEADER ======================= -->
+  <header id="header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+    <div class="mx-auto max-w-7xl px-5 sm:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        <a href="#top" class="font-display font-extrabold tracking-tightest text-lg sm:text-xl leading-none">
+          LAURA V.<span class="text-gold">.</span>HERRERA
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium" aria-label="Principal">
+          <a href="#about"    class="navlink"  data-i18n="nav.about">Perfil</a>
+          <a href="#services" class="navlink"  data-i18n="nav.services">Servicios</a>
+          <a href="#projects" class="navlink"  data-i18n="nav.projects">Proyectos</a>
+          <a href="#cv"       class="navlink"  data-i18n="nav.cv">Trayectoria</a>
+          <a href="#contact"  class="navlink"  data-i18n="nav.contact">Contacto</a>
+        </nav>
+
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Language toggle -->
+          <button id="langToggle" type="button"
+            class="text-xs font-semibold border border-current/30 rounded-full px-3 py-1.5 hover:bg-ink hover:text-white transition-colors cursor-pointer"
+            aria-label="Cambiar idioma / Switch language">
+            <span id="langLabel">EN</span>
+          </button>
+
+          <!-- WhatsApp CTA (desktop) -->
+          <a id="navWhats" href="#" target="_blank" rel="noopener"
+            class="hidden sm:inline-flex items-center gap-2 bg-gold hover:bg-goldlt text-white text-sm font-semibold rounded-full px-4 py-2 transition-colors cursor-pointer">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.523 5.26l-.999 3.648 3.965-1.027zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span data-i18n="nav.cta">WhatsApp</span>
+          </a>
+
+          <!-- Mobile menu button -->
+          <button id="menuBtn" type="button" class="md:hidden p-2 -mr-2 cursor-pointer" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileNav">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile nav -->
+    <nav id="mobileNav" hidden class="md:hidden bg-white border-t border-line" aria-label="Móvil">
+      <div class="px-5 py-4 flex flex-col gap-1 text-base font-medium">
+        <a href="#about"    class="py-2" data-i18n="nav.about">Perfil</a>
+        <a href="#services" class="py-2" data-i18n="nav.services">Servicios</a>
+        <a href="#projects" class="py-2" data-i18n="nav.projects">Proyectos</a>
+        <a href="#cv"       class="py-2" data-i18n="nav.cv">Trayectoria</a>
+        <a href="#contact"  class="py-2" data-i18n="nav.contact">Contacto</a>
+        <a id="navWhatsM" href="#" target="_blank" rel="noopener" class="mt-2 inline-flex items-center justify-center gap-2 bg-gold text-white font-semibold rounded-full px-4 py-3">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.523 5.26l-.999 3.648 3.965-1.027zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          <span data-i18n="contact.whatsapp">Escríbeme por WhatsApp</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <span id="top"></span>
+
+    <!-- ======================= HERO ======================= -->
+    <section class="relative min-h-[100svh] flex flex-col justify-end overflow-hidden pt-24">
+      <!-- Background illustration of Bucaramanga -->
+      <div class="absolute inset-0 -z-10">
+        <img src="assets/portfolio/pages/page-01.webp" alt="Ilustración a tinta del paisaje urbano de Bucaramanga"
+             class="w-full h-full object-cover object-bottom opacity-[0.07]" loading="eager" />
+      </div>
+
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 w-full">
+        <div class="max-w-5xl">
+          <p class="reveal flex items-center gap-3 text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-gold mb-5">
+            <span class="w-8 h-px bg-gold"></span>
+            <span data-i18n="hero.eyebrow">Arquitecta · Bucaramanga, Colombia</span>
+          </p>
+          <h1 class="reveal headline text-[clamp(2.75rem,11vw,9rem)] mb-6">
+            Laura Victoria<br />Herrera M.
+          </h1>
+          <p class="reveal text-lg sm:text-2xl text-ink2 max-w-2xl mb-10 leading-snug" data-i18n="hero.tagline">
+            Diseño urbano y arquitectónico que transforma ciudades y genera valor real para las comunidades.
+          </p>
+          <div class="reveal flex flex-wrap items-center gap-3 sm:gap-4">
+            <a id="heroWhats" href="#" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-2.5 bg-gold hover:bg-goldlt text-white font-semibold rounded-full px-7 py-4 text-base sm:text-lg transition-colors cursor-pointer">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.523 5.26l-.999 3.648 3.965-1.027zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+              <span data-i18n="hero.cta1">Hablemos de tu proyecto</span>
+            </a>
+            <a href="#projects" class="inline-flex items-center gap-2 font-semibold rounded-full px-7 py-4 text-base sm:text-lg border border-ink/20 hover:bg-ink hover:text-white transition-colors cursor-pointer">
+              <span data-i18n="hero.cta2">Ver proyectos</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Marquee strip -->
+        <div class="reveal mt-14 sm:mt-20 border-t border-line pt-6 pb-10 flex flex-wrap gap-x-8 gap-y-2 text-sm font-medium text-ink2">
+          <span>Revit</span><span class="text-line">/</span>
+          <span>ArchiCAD</span><span class="text-line">/</span>
+          <span>BIM 360</span><span class="text-line">/</span>
+          <span>D5 Render</span><span class="text-line">/</span>
+          <span>SketchUp</span><span class="text-line">/</span>
+          <span>Photoshop</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= ABOUT / PROFILE ======================= -->
+    <section id="about" class="py-20 sm:py-28 border-t border-line scroll-mt-20">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <div class="lg:col-span-5 reveal">
+            <div class="relative max-w-md mx-auto lg:mx-0">
+              <div class="absolute -bottom-4 -right-4 w-full h-full border-2 border-gold rounded-xl -z-10" aria-hidden="true"></div>
+              <img src="assets/portfolio/portrait.webp" alt="Retrato de Laura Victoria Herrera M."
+                   class="w-full rounded-xl grayscale" loading="lazy" width="622" height="872" />
+            </div>
+          </div>
+          <div class="lg:col-span-7 reveal">
+            <p class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-4" data-i18n="about.eyebrow">Perfil profesional</p>
+            <h2 class="headline text-4xl sm:text-5xl lg:text-6xl mb-6" data-i18n="about.heading">
+              Rigor técnico con sensibilidad humana.
+            </h2>
+            <p class="text-lg text-ink2 leading-relaxed mb-5" data-i18n="about.p1">
+              Arquitecta bilingüe con más de tres años de experiencia liderando proyectos urbanos, de espacio público, educativos y de salud en Bucaramanga y Santander. Coordiné 49 laboratorios en 5.335 m² para la Universidad Industrial de Santander y participé en el diseño del Corredor Urbano Calle 53–54.
+            </p>
+            <p class="text-lg text-ink2 leading-relaxed" data-i18n="about.p2">
+              Especializada en metodologías <strong class="text-ink font-semibold">BIM</strong> y visualización arquitectónica, combino rigor técnico, creatividad y sostenibilidad para generar impacto comunitario y valor tangible en cada proyecto.
+            </p>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line mt-16 reveal">
+          <div class="bg-white p-6 sm:p-8">
+            <div class="headline text-4xl sm:text-5xl text-gold">3+</div>
+            <p class="mt-2 text-sm text-ink2" data-i18n="stats.years">Años de experiencia</p>
+          </div>
+          <div class="bg-white p-6 sm:p-8">
+            <div class="headline text-4xl sm:text-5xl text-gold">5.335</div>
+            <p class="mt-2 text-sm text-ink2" data-i18n="stats.m2">m² de laboratorios coordinados</p>
+          </div>
+          <div class="bg-white p-6 sm:p-8">
+            <div class="headline text-4xl sm:text-5xl text-gold">49</div>
+            <p class="mt-2 text-sm text-ink2" data-i18n="stats.labs">Laboratorios coordinados</p>
+          </div>
+          <div class="bg-white p-6 sm:p-8">
+            <div class="headline text-4xl sm:text-5xl text-gold">1,2<span class="text-2xl"> km</span></div>
+            <p class="mt-2 text-sm text-ink2" data-i18n="stats.km">De alameda urbana diseñada</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= SERVICES ======================= -->
+    <section id="services" class="py-20 sm:py-28 bg-ink text-white scroll-mt-20">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="max-w-3xl reveal">
+          <p class="text-xs font-semibold tracking-[0.2em] uppercase text-goldlt mb-4" data-i18n="services.eyebrow">Cómo puedo ayudarte</p>
+          <h2 class="headline text-4xl sm:text-5xl lg:text-6xl mb-6" data-i18n="services.heading">
+            Servicios de diseño y consultoría.
+          </h2>
+          <p class="text-lg text-white/70 leading-relaxed" data-i18n="services.sub">
+            Acompaño tu proyecto desde la idea hasta la entrega, con estándares técnicos, visualización de alto nivel y enfoque en resultados.
+          </p>
+        </div>
+
+        <div id="services-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 border border-white/10 mt-14 reveal">
+          <!-- injected by JS -->
+        </div>
+
+        <div class="mt-12 reveal">
+          <a id="servicesWhats" href="#" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2.5 bg-gold hover:bg-goldlt text-white font-semibold rounded-full px-7 py-4 text-base sm:text-lg transition-colors cursor-pointer">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.523 5.26l-.999 3.648 3.965-1.027zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span data-i18n="services.cta">Cuéntame qué necesitas</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= PROJECTS ======================= -->
+    <section id="projects" class="py-20 sm:py-28 scroll-mt-20">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="flex flex-wrap items-end justify-between gap-6 mb-14 reveal">
+          <div class="max-w-2xl">
+            <p class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-4" data-i18n="projects.eyebrow">Trabajo seleccionado</p>
+            <h2 class="headline text-4xl sm:text-5xl lg:text-6xl" data-i18n="projects.heading">Proyectos.</h2>
+          </div>
+          <p class="text-ink2 max-w-sm" data-i18n="projects.sub">Cuatro proyectos urbanos y arquitectónicos en Bucaramanga y Santander.</p>
+        </div>
+
+        <div id="projects-grid" class="grid md:grid-cols-2 gap-6 lg:gap-8">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= CV ======================= -->
+    <section id="cv" class="py-20 sm:py-28 border-t border-line scroll-mt-20">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="mb-14 reveal">
+          <p class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-4" data-i18n="cv.eyebrow">Trayectoria</p>
+          <h2 class="headline text-4xl sm:text-5xl lg:text-6xl" data-i18n="cv.heading">Formación y experiencia.</h2>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+          <!-- Experience -->
+          <div class="reveal">
+            <h3 class="font-display font-bold text-xl mb-8 flex items-center gap-3">
+              <span class="w-6 h-px bg-gold"></span><span data-i18n="cv.experience">Experiencia</span>
+            </h3>
+            <ol id="cv-experience" class="space-y-8 border-l border-line pl-6"></ol>
+          </div>
+
+          <!-- Education + languages -->
+          <div class="space-y-12">
+            <div class="reveal">
+              <h3 class="font-display font-bold text-xl mb-8 flex items-center gap-3">
+                <span class="w-6 h-px bg-gold"></span><span data-i18n="cv.education">Educación</span>
+              </h3>
+              <ol id="cv-education" class="space-y-8 border-l border-line pl-6"></ol>
+            </div>
+
+            <div class="reveal">
+              <h3 class="font-display font-bold text-xl mb-6 flex items-center gap-3">
+                <span class="w-6 h-px bg-gold"></span><span data-i18n="cv.languages">Idiomas</span>
+              </h3>
+              <ul id="cv-languages" class="flex flex-wrap gap-3"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= CONTACT ======================= -->
+    <section id="contact" class="py-20 sm:py-28 bg-ink text-white scroll-mt-20 relative overflow-hidden">
+      <img src="assets/portfolio/pages/page-38.webp" alt="" aria-hidden="true"
+           class="absolute inset-0 w-full h-full object-cover object-bottom opacity-[0.06] pointer-events-none" loading="lazy" />
+      <div class="mx-auto max-w-7xl px-5 sm:px-8 relative">
+        <div class="max-w-4xl reveal">
+          <p class="text-xs font-semibold tracking-[0.2em] uppercase text-goldlt mb-4" data-i18n="contact.eyebrow">Trabajemos juntos</p>
+          <h2 class="headline text-4xl sm:text-6xl lg:text-7xl mb-8" data-i18n="contact.heading">
+            ¿Tienes un proyecto en mente?
+          </h2>
+          <p class="text-lg sm:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl" data-i18n="contact.sub">
+            Escríbeme por WhatsApp y conversemos. Respondo personalmente y te ayudo a darle forma a tu idea.
+          </p>
+
+          <a id="contactWhats" href="#" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-3 bg-gold hover:bg-goldlt text-white font-semibold rounded-full px-8 py-5 text-lg sm:text-xl transition-colors cursor-pointer">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.523 5.26l-.999 3.648 3.965-1.027zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span data-i18n="contact.whatsapp">Escríbeme por WhatsApp</span>
+          </a>
+
+          <div class="mt-12 grid sm:grid-cols-3 gap-8 text-sm">
+            <div>
+              <p class="text-white/40 uppercase tracking-wider text-xs mb-2" data-i18n="contact.phoneLabel">Teléfono</p>
+              <a href="tel:+573153980538" class="text-white hover:text-goldlt transition-colors">+57 315 3980 538</a>
+            </div>
+            <div>
+              <p class="text-white/40 uppercase tracking-wider text-xs mb-2" data-i18n="contact.emailLabel">Email</p>
+              <a href="mailto:lauraherreram@gmail.com" class="text-white hover:text-goldlt transition-colors break-all">lauraherreram@gmail.com</a>
+            </div>
+            <div>
+              <p class="text-white/40 uppercase tracking-wider text-xs mb-2" data-i18n="contact.locLabel">Ubicación</p>
+              <p class="text-white" data-i18n="contact.loc">Bucaramanga, Santander · Colombia</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer class="bg-ink text-white/50 border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-5 sm:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
+      <p class="font-display font-bold text-white">LAURA V.<span class="text-gold">.</span>HERRERA</p>
+      <p>© <span id="year"></span> Laura Victoria Herrera M. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+    </div>
+  </footer>
+
+  <!-- ======================= FLOATING WHATSAPP ======================= -->
+  <a id="floatWhats" href="#" target="_blank" rel="noopener"
+     class="fixed bottom-5 right-5 z-50 inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+     aria-label="Contactar por WhatsApp">
+    <svg class="w-7 h-7 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.523 5.26l-.999 3.648 3.965-1.027zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+  </a>
+
+  <!-- ======================= PROJECT MODAL / LIGHTBOX ======================= -->
+  <div id="modal" hidden class="fixed inset-0 z-[100]" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="modalBackdrop" class="absolute inset-0 bg-ink/80 backdrop-blur-sm"></div>
+    <div class="absolute inset-0 overflow-y-auto">
+      <div class="min-h-full flex items-start sm:items-center justify-center p-3 sm:p-6">
+        <div class="relative bg-white w-full max-w-5xl rounded-xl overflow-hidden shadow-2xl">
+          <button id="modalClose" type="button" class="absolute top-3 right-3 z-10 w-10 h-10 inline-flex items-center justify-center rounded-full bg-ink/80 text-white hover:bg-ink transition-colors cursor-pointer" aria-label="Cerrar">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+
+          <div class="p-6 sm:p-10">
+            <p id="modalMeta" class="text-xs font-semibold tracking-[0.2em] uppercase text-gold mb-3"></p>
+            <h3 id="modalTitle" class="headline text-2xl sm:text-4xl mb-5"></h3>
+            <p id="modalDesc" class="text-ink2 leading-relaxed mb-4"></p>
+            <p id="modalAchievement" class="text-ink2 leading-relaxed mb-8 border-l-2 border-gold pl-4 italic"></p>
+
+            <div id="modalGallery" class="grid sm:grid-cols-2 gap-3"></div>
+
+            <div class="mt-8">
+              <a id="modalWhats" href="#" target="_blank" rel="noopener"
+                 class="inline-flex items-center gap-2.5 bg-gold hover:bg-goldlt text-white font-semibold rounded-full px-6 py-3.5 transition-colors cursor-pointer">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.523 5.26l-.999 3.648 3.965-1.027zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.71.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                <span data-i18n="modal.cta">Consultar por este proyecto</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>
