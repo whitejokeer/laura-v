@@ -1,0 +1,14 @@
+{
+  "name": "PADS — Inmuebles en venta y arriendo en Colombia",
+  "short_name": "PADS",
+  "description": "El portafolio curado de las mejores agencias y agentes inmobiliarios de Colombia.",
+  "lang": "es-CO",
+  "start_url": "/",
+  "icons": [
+    { "src": "/icons/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/android-chrome-256x256.png", "sizes": "256x256", "type": "image/png" }
+  ],
+  "theme_color": "#EC008C",
+  "background_color": "#F7F5F1",
+  "display": "standalone"
+}
