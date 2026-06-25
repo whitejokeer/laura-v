@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0E0E11" />
+  <meta name="theme-color" content="#1C0E1A" />
   <meta name="robots" content="index,follow" />
 
   <!-- Primary SEO -->
@@ -37,7 +37,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -78,480 +78,486 @@
   </script>
 
   <style>
-    /* ============ Tokens ============ */
+    /* ============================================================
+       PADS — propuesta de rediseño · "casa curatorial / concierge"
+       ============================================================ */
     :root{
-      --ink:#0E0E11;
-      --ink-soft:#1A1A1F;
-      --paper:#F7F5F1;
-      --magenta:#EC008C;
-      --magenta-deep:#C2007A;
-      --blue:#006FE8;
-      --mist:#EAE6DE;
-      --line:#DED9CF;
-      --stone:#6B6862;
+      --ink:#16121A;          /* near-black, plum undertone */
+      --plum:#1C0E1A;         /* deep wine — cinematic sections */
+      --plum-2:#2A1626;
+      --paper:#FAF7F3;        /* warm white */
+      --stone-surface:#F1ECE3;
+      --magenta:#EC008C;      /* PADS brand */
+      --magenta-bright:#FF35A8;
+      --line:#E4DDD2;         /* hairline on paper */
+      --line-soft:rgba(255,255,255,.14);
+      --muted:#5B554C;        /* secondary text on paper (AA) */
+      --muted-dark:#B7AAB6;   /* secondary text on plum */
       --white:#FFFFFF;
 
-      --f-display:"Bricolage Grotesque", "Inter Tight", system-ui, sans-serif;
-      --f-body:"Inter Tight", system-ui, -apple-system, sans-serif;
-      --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+      --serif:"Fraunces", Georgia, "Times New Roman", serif;
+      --sans:"Inter Tight", system-ui, -apple-system, sans-serif;
+      --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-      --wrap:1180px;
-      --r:14px;
+      --wrap:1240px;
+      --gut:24px;
       --ease:cubic-bezier(.22,.61,.36,1);
     }
 
     *,*::before,*::after{box-sizing:border-box}
-    html{scroll-behavior:smooth}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
     body{
-      margin:0;
-      background:var(--paper);
-      color:var(--ink);
-      font-family:var(--f-body);
-      font-size:16px;
-      line-height:1.5;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
+      margin:0;background:var(--paper);color:var(--ink);
+      font-family:var(--sans);font-size:16px;line-height:1.55;
+      -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
       overflow-x:hidden;
     }
     img{display:block;max-width:100%}
     a{color:inherit;text-decoration:none}
-    button{font-family:inherit;cursor:pointer}
-    :focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:4px}
+    button{font-family:inherit;cursor:pointer;border:0;background:none}
+    h1,h2,h3,h4{margin:0;font-weight:500}
+    p{margin:0}
+    :focus-visible{outline:3px solid var(--magenta);outline-offset:3px;border-radius:3px}
 
-    .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:20px}
+    .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
+    .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
     .eyebrow{
-      font-family:var(--f-mono);
-      font-size:.72rem;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--magenta);
-      font-weight:500;
-      margin:0;
+      font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;
+      text-transform:uppercase;color:var(--magenta);font-weight:500;
+      display:inline-flex;align-items:center;gap:.6em;margin:0 0 1.1rem;
     }
-    .mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+    .eyebrow::before{content:"";width:26px;height:1px;background:var(--magenta);display:inline-block}
+    .eyebrow.on-dark{color:var(--magenta-bright)}
 
-    /* ============ Header ============ */
-    .nav{
-      position:sticky;top:0;z-index:60;
-      background:rgba(247,245,241,.82);
-      backdrop-filter:saturate(140%) blur(14px);
-      border-bottom:1px solid var(--line);
+    .display{
+      font-family:var(--serif);font-weight:500;line-height:.98;
+      letter-spacing:-.02em;font-optical-sizing:auto;
     }
-    .nav__row{display:flex;align-items:center;justify-content:space-between;height:60px}
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand img{height:22px;width:auto}
-    .nav__links{display:none}
-    .nav__cta{display:flex;align-items:center;gap:10px}
+    .display em{font-style:italic;font-weight:400}
+    .ink-accent{color:var(--magenta)}
+
     .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
-      font-weight:600;font-size:.92rem;
-      padding:11px 18px;border-radius:999px;border:1px solid transparent;
-      transition:transform .2s var(--ease), background .2s var(--ease), color .2s var(--ease);
-      white-space:nowrap;
+      display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+      font-weight:600;font-size:.95rem;padding:.95rem 1.6rem;border-radius:100px;
+      transition:transform .25s var(--ease),background .25s var(--ease),color .25s var(--ease);
+      white-space:nowrap;min-height:48px;
     }
     .btn--magenta{background:var(--magenta);color:#fff}
-    .btn--magenta:hover{background:var(--magenta-deep);transform:translateY(-1px)}
-    .btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-    .btn--ghost:hover{border-color:var(--ink)}
+    .btn--magenta:hover{background:var(--magenta-bright)}
     .btn--ink{background:var(--ink);color:#fff}
-    .btn--ink:hover{transform:translateY(-1px)}
+    .btn--ink:hover{transform:translateY(-2px)}
+    .btn--ghost{border:1px solid currentColor}
     .btn--light{background:#fff;color:var(--ink)}
-    .btn--block{width:100%}
-    .nav__login{display:none}
-    .burger{
-      display:inline-flex;flex-direction:column;justify-content:center;gap:5px;
-      width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;
+    .btn--light:hover{transform:translateY(-2px)}
+
+    /* ============ Header ============ */
+    .head{
+      position:fixed;inset:0 0 auto 0;z-index:90;
+      transition:background .3s var(--ease),box-shadow .3s var(--ease),border-color .3s;
+      border-bottom:1px solid transparent;
     }
-    .burger span{height:2px;width:18px;background:var(--ink);margin-inline:auto;transition:.25s var(--ease)}
-    .mobile-menu{
-      display:none;flex-direction:column;gap:2px;padding:8px 20px 20px;
-      border-bottom:1px solid var(--line);background:var(--paper);
-    }
-    .mobile-menu.open{display:flex}
-    .mobile-menu a{padding:13px 4px;font-weight:600;border-bottom:1px solid var(--line)}
-    .mobile-menu a:last-of-type{border-bottom:0}
-    .mobile-menu .btn{margin-top:12px}
+    .head__in{display:flex;align-items:center;gap:1.5rem;height:74px}
+    .logo{display:flex;align-items:center}
+    .logo img{height:26px;width:auto;filter:brightness(0) invert(1)}
+    .nav{display:flex;gap:1.7rem;margin-left:1rem}
+    .nav a{font-size:.92rem;font-weight:500;color:rgba(255,255,255,.86);transition:color .2s}
+    .nav a:hover{color:#fff}
+    .head__right{margin-left:auto;display:flex;align-items:center;gap:.6rem}
+    .head__login{font-size:.92rem;font-weight:600;color:#fff;padding:.5rem .4rem}
+    .head__cta{font-size:.9rem;font-weight:600;color:#fff;border:1px solid rgba(255,255,255,.5);padding:.6rem 1.15rem;border-radius:100px;transition:background .2s,color .2s}
+    .head__cta:hover{background:#fff;color:var(--ink)}
+    .burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;margin-left:auto}
+    .burger span{display:block;width:22px;height:2px;background:#fff;position:relative}
+    .burger span::before,.burger span::after{content:"";position:absolute;left:0;width:22px;height:2px;background:#fff}
+    .burger span::before{top:-7px}.burger span::after{top:7px}
+
+    /* scrolled state */
+    .head.solid{background:rgba(250,247,243,.92);backdrop-filter:blur(14px);border-color:var(--line)}
+    .head.solid .logo img{filter:none}
+    .head.solid .nav a{color:var(--ink)}
+    .head.solid .head__login{color:var(--ink)}
+    .head.solid .head__cta{color:var(--ink);border-color:var(--ink)}
+    .head.solid .head__cta:hover{background:var(--ink);color:#fff}
+    .head.solid .burger span,.head.solid .burger span::before,.head.solid .burger span::after{background:var(--ink)}
+
+    .mnav{position:fixed;inset:74px 0 auto 0;z-index:89;background:var(--paper);border-bottom:1px solid var(--line);
+      padding:1rem var(--gut) 1.6rem;display:none;flex-direction:column;gap:.2rem}
+    .mnav.open{display:flex}
+    .mnav a{padding:.85rem 0;font-size:1.05rem;font-weight:500;border-bottom:1px solid var(--line)}
+    .mnav a:last-child{border-bottom:0}
 
     /* ============ Hero ============ */
-    .hero{position:relative;color:#fff;overflow:hidden}
-    .hero__media{position:absolute;inset:0;z-index:0}
-    .hero__media img{width:100%;height:100%;object-fit:cover}
-    .hero__media::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(180deg,rgba(14,14,17,.42) 0%,rgba(14,14,17,.30) 40%,rgba(14,14,17,.78) 100%);
-    }
-    .hero__inner{position:relative;z-index:1;padding-top:64px;padding-bottom:30px;min-height:88vh;display:flex;flex-direction:column;justify-content:flex-end}
-    .hero .eyebrow{color:#fff;opacity:.85}
-    .hero h1{
-      font-family:var(--f-display);
-      font-weight:800;
-      font-size:clamp(2.5rem,11vw,4.6rem);
-      line-height:.97;
-      letter-spacing:-.02em;
-      margin:14px 0 0;
-      max-width:14ch;
-      text-wrap:balance;
-    }
-    .hero h1 em{font-style:normal;color:var(--magenta)}
-    .hero__sub{margin:18px 0 0;font-size:1.05rem;max-width:42ch;color:rgba(255,255,255,.86)}
+    .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;color:#fff;isolation:isolate;padding-top:74px}
+    .hero__media{position:absolute;inset:0;z-index:-2;overflow:hidden}
+    .hero__media img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);animation:kenburns 14s var(--ease) forwards}
+    @keyframes kenburns{to{transform:scale(1)}}
+    .hero__media::after{content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(20,8,18,.45) 0%,rgba(20,8,18,.15) 32%,rgba(20,8,18,.55) 72%,rgba(20,8,18,.92) 100%);}
+    .hero__in{width:100%;max-width:var(--wrap);margin-inline:auto;padding:0 var(--gut) 2.4rem;position:relative}
+    .hero__eyebrow{color:#fff;opacity:.9}
+    .hero__eyebrow::before{background:var(--magenta-bright)}
+    .hero h1{font-family:var(--serif);font-weight:500;line-height:.96;letter-spacing:-.025em;
+      font-size:clamp(3.1rem,9vw,7.2rem);max-width:14ch;margin:.2rem 0 1.4rem}
+    .hero h1 em{font-style:italic;font-weight:400;color:var(--magenta-bright)}
+    .hero__sub{max-width:46ch;font-size:clamp(1rem,1.4vw,1.18rem);color:rgba(255,255,255,.9);line-height:1.6}
 
-    /* Search card */
-    .search{
-      margin-top:26px;background:rgba(255,255,255,.97);color:var(--ink);
-      border-radius:var(--r);padding:14px;box-shadow:0 24px 60px -28px rgba(0,0,0,.55);
+    /* hero spec-plate (signature: drawing title block) */
+    .plate{
+      position:absolute;right:var(--gut);bottom:13.5rem;z-index:2;
+      font-family:var(--mono);font-size:.72rem;line-height:1.5;letter-spacing:.02em;
+      background:rgba(20,8,18,.42);backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:.85rem 1rem;max-width:230px;
     }
-    .seg{display:flex;background:var(--mist);border-radius:10px;padding:4px;gap:4px}
-    .seg button{
-      flex:1;border:0;background:transparent;border-radius:7px;padding:10px;
-      font-weight:600;font-size:.92rem;color:var(--stone);transition:.2s var(--ease);
-    }
-    .seg button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 2px 8px -2px rgba(0,0,0,.2)}
-    .search__field{margin-top:12px}
-    .search__field label{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
-    .search__field input{
-      width:100%;margin-top:6px;border:1px solid var(--line);border-radius:10px;
-      padding:13px 14px;font-family:inherit;font-size:1rem;background:#fff;color:var(--ink);
-    }
-    .search__field input::placeholder{color:#9a968e}
-    .search .btn{margin-top:12px}
+    .plate b{display:block;font-family:var(--sans);font-weight:600;font-size:.82rem;letter-spacing:0;margin-top:.25rem}
+    .plate .plate__tag{color:var(--magenta-bright);text-transform:uppercase;letter-spacing:.16em;font-size:.62rem}
 
-    .hero__stats{display:flex;flex-wrap:wrap;gap:22px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.2)}
-    .stat__n{font-family:var(--f-mono);font-size:1.45rem;font-weight:700;line-height:1}
-    .stat__l{font-size:.78rem;color:rgba(255,255,255,.72);margin-top:4px}
+    /* search console */
+    .console{
+      margin-top:2.2rem;background:var(--paper);color:var(--ink);
+      border-radius:18px;padding:.5rem;box-shadow:0 30px 70px -30px rgba(20,8,18,.6);
+      display:grid;grid-template-columns:auto 1.4fr 1fr auto;gap:.4rem;align-items:stretch;
+    }
+    .seg{display:flex;background:var(--stone-surface);border-radius:13px;padding:.3rem}
+    .seg button{flex:1;font-weight:600;font-size:.9rem;color:var(--muted);padding:.7rem 1.1rem;border-radius:10px;transition:.2s}
+    .seg button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    .field{display:flex;flex-direction:column;justify-content:center;padding:.45rem 1rem;border-radius:13px;transition:background .2s}
+    .field:hover{background:var(--stone-surface)}
+    .field label{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--magenta)}
+    .field input,.field select{border:0;background:none;font-family:var(--sans);font-size:1rem;font-weight:500;color:var(--ink);padding:.15rem 0;width:100%}
+    .field input::placeholder{color:#9a948a}
+    .field select{appearance:none;cursor:pointer}
+    .console .btn{border-radius:13px;font-size:1rem;padding-inline:2rem}
+    .popular{margin-top:1.1rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;font-size:.85rem;color:rgba(255,255,255,.82)}
+    .popular b{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:500}
+    .popular a{border:1px solid rgba(255,255,255,.32);padding:.32rem .85rem;border-radius:100px;transition:.2s}
+    .popular a:hover{background:#fff;color:var(--ink);border-color:#fff}
 
-    /* ============ Section frame ============ */
-    .section{padding:64px 0}
-    .section__head{margin-bottom:30px}
-    .section__title{
-      font-family:var(--f-display);font-weight:700;
-      font-size:clamp(1.8rem,6.5vw,2.7rem);line-height:1.02;letter-spacing:-.02em;margin:10px 0 0;
-    }
-    .section__lead{margin:12px 0 0;color:var(--stone);max-width:54ch;font-size:1.02rem}
+    /* ============ Section scaffolding ============ */
+    .section{padding:clamp(4.5rem,9vw,8rem) 0}
+    .s-head{max-width:60ch;margin-bottom:3rem}
+    .s-head h2{font-family:var(--serif);font-weight:500;line-height:1.02;letter-spacing:-.02em;
+      font-size:clamp(2.2rem,5vw,3.7rem)}
+    .s-head h2 em{font-style:italic;font-weight:400}
+    .s-lead{margin-top:1.1rem;font-size:1.08rem;color:var(--muted);max-width:54ch}
 
-    /* ============ Curated index (signature) ============ */
-    .curated{background:var(--ink);color:#fff}
-    .curated .eyebrow{color:var(--magenta)}
-    .curated .section__title{color:#fff}
-    .curated .section__lead{color:rgba(255,255,255,.7)}
-    .rail{
-      display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
-      margin:0 -20px;padding:4px 20px 20px;-webkit-overflow-scrolling:touch;
-      scrollbar-width:none;
-    }
-    .rail::-webkit-scrollbar{display:none}
-    .feat{
-      scroll-snap-align:start;flex:0 0 82%;max-width:340px;
-      background:var(--ink-soft);border:1px solid rgba(255,255,255,.09);border-radius:var(--r);
-      overflow:hidden;display:flex;flex-direction:column;
-      transition:transform .3s var(--ease),border-color .3s var(--ease);
-    }
-    .feat:hover{transform:translateY(-4px);border-color:rgba(236,0,140,.5)}
-    .feat__media{position:relative;aspect-ratio:4/3;overflow:hidden}
-    .feat__media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-    .feat:hover .feat__media img{transform:scale(1.05)}
-    .feat__idx{
-      position:absolute;top:12px;left:12px;font-family:var(--f-mono);font-weight:700;
-      font-size:.8rem;color:#fff;background:var(--magenta);border-radius:7px;padding:4px 9px;letter-spacing:.05em;
-    }
-    .feat__body{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}
-    .feat__loc{font-family:var(--f-display);font-weight:700;font-size:1.18rem}
-    .feat__meta{font-size:.84rem;color:rgba(255,255,255,.6)}
-    .feat__price{font-family:var(--f-mono);font-size:.96rem;font-weight:500;color:#fff;margin-top:auto;padding-top:10px}
-    .feat__price span{color:var(--magenta)}
-    .rail-hint{font-family:var(--f-mono);font-size:.72rem;color:rgba(255,255,255,.5);letter-spacing:.08em;margin-top:4px}
+    /* ============ Selection (editorial gallery) ============ */
+    .selection .s-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:1rem;max-width:none}
+    .selection .s-head>div{max-width:46ch}
+    .sel-grid{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:18px}
+    .prop{position:relative;overflow:hidden;border-radius:18px;background:#ddd;display:block;isolation:isolate}
+    .prop--lead{grid-row:span 2;min-height:540px}
+    .prop:not(.prop--lead){min-height:261px}
+    .prop img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .8s var(--ease)}
+    .prop:hover img{transform:scale(1.06)}
+    .prop::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,8,18,0) 38%,rgba(20,8,18,.82) 100%);z-index:1}
+    .prop__body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:1.4rem;color:#fff;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem}
+    .prop__no{font-family:var(--mono);font-size:.66rem;letter-spacing:.18em;color:var(--magenta-bright);text-transform:uppercase}
+    .prop__loc{font-family:var(--serif);font-size:1.5rem;font-weight:500;line-height:1.05;margin-top:.3rem}
+    .prop--lead .prop__loc{font-size:2.1rem}
+    .prop__meta{font-size:.85rem;color:rgba(255,255,255,.78);margin-top:.35rem}
+    .prop__price{font-family:var(--mono);font-size:.82rem;text-align:right;line-height:1.4;flex-shrink:0;padding-bottom:.2rem}
+    .prop__price span{display:block;color:rgba(255,255,255,.7);font-size:.72rem}
 
-    /* ============ Filters + listings ============ */
-    .chips{display:flex;gap:9px;overflow-x:auto;margin:0 -20px;padding:2px 20px 6px;scrollbar-width:none}
+    /* ============ Explore by place ============ */
+    .places{background:var(--ink);color:#fff}
+    .places .s-lead{color:var(--muted-dark)}
+    .place-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .place{position:relative;overflow:hidden;border-radius:16px;min-height:340px;display:block;isolation:isolate}
+    .place img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+    .place:hover img{transform:scale(1.07)}
+    .place::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,10,20,.1) 30%,rgba(22,10,20,.85));z-index:1}
+    .place__body{position:absolute;inset:auto 0 0 0;z-index:2;padding:1.3rem}
+    .place__name{font-family:var(--serif);font-size:1.7rem;font-weight:500}
+    .place__count{font-family:var(--mono);font-size:.74rem;color:rgba(255,255,255,.8);margin-top:.2rem}
+
+    /* ============ Listings grid ============ */
+    .chips{display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.4rem;margin-bottom:2rem;scrollbar-width:none}
     .chips::-webkit-scrollbar{display:none}
-    .chip{
-      flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;
-      padding:9px 16px;font-weight:600;font-size:.86rem;color:var(--stone);transition:.2s var(--ease);white-space:nowrap;
-    }
+    .chip{flex-shrink:0;font-weight:500;font-size:.9rem;color:var(--muted);padding:.6rem 1.15rem;border:1px solid var(--line);border-radius:100px;background:#fff;transition:.2s}
     .chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
-    .chip:hover{border-color:var(--ink)}
-
-    .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:24px}
-    .card{
-      background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
-      transition:transform .3s var(--ease),box-shadow .3s var(--ease);
-    }
-    .card:hover{transform:translateY(-4px);box-shadow:0 22px 44px -26px rgba(0,0,0,.35)}
-    .card__media{position:relative;aspect-ratio:16/11;overflow:hidden}
-    .card__media img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
-    .card:hover .card__media img{transform:scale(1.04)}
-    .badge{
-      position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;
-      font-family:var(--f-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;
-      background:rgba(255,255,255,.94);color:var(--ink);border-radius:7px;padding:5px 9px;
-    }
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+    .card:hover{transform:translateY(-4px);box-shadow:0 24px 50px -28px rgba(20,8,18,.4)}
+    .card__media{position:relative;aspect-ratio:4/3;overflow:hidden;background:#eee}
+    .card__media img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+    .card:hover .card__media img{transform:scale(1.05)}
+    .badge{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.94);color:var(--ink);padding:.4rem .7rem;border-radius:7px;font-weight:500}
     .badge--pads{background:var(--magenta);color:#fff}
-    .fav{
-      position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;
-      background:rgba(255,255,255,.92);border:0;display:grid;place-items:center;font-size:1rem;line-height:1;
-    }
-    .card__body{padding:16px}
-    .card__price{font-family:var(--f-mono);font-weight:700;font-size:1.18rem;letter-spacing:-.01em}
-    .card__price small{font-weight:400;font-size:.78rem;color:var(--stone)}
-    .card__loc{margin-top:4px;font-weight:600}
-    .card__loc span{display:block;font-weight:400;color:var(--stone);font-size:.86rem}
-    .card__specs{
-      display:flex;gap:14px;margin-top:13px;padding-top:13px;border-top:1px solid var(--line);
-      font-family:var(--f-mono);font-size:.8rem;color:var(--stone);
-    }
-    .card__specs b{color:var(--ink);font-weight:700}
+    .fav{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);font-size:1.05rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+    .fav:hover{background:var(--magenta);color:#fff}
+    /* spec-plate inside card */
+    .card__body{padding:1.15rem 1.2rem 1.3rem;display:flex;flex-direction:column;gap:.55rem;flex:1}
+    .card__price{font-family:var(--mono);font-size:1.18rem;font-weight:600;letter-spacing:-.01em}
+    .card__price small{font-family:var(--sans);font-size:.78rem;font-weight:500;color:var(--muted)}
+    .card__loc{font-family:var(--serif);font-size:1.2rem;font-weight:500;line-height:1.15}
+    .card__loc span{display:block;font-family:var(--sans);font-size:.82rem;color:var(--muted);font-weight:400;margin-top:.05rem}
+    .card__specs{margin-top:auto;display:flex;gap:1rem;padding-top:.8rem;border-top:1px solid var(--line);font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+    .card__specs b{color:var(--ink);font-weight:600}
+    .more{display:flex;justify-content:center;margin-top:3rem}
 
-    .more{margin-top:28px;text-align:center}
+    /* ============ Difference (cinematic) ============ */
+    .diff{background:var(--plum);color:#fff;position:relative;overflow:hidden}
+    .diff::before{content:"";position:absolute;top:-30%;right:-10%;width:60%;height:130%;
+      background:radial-gradient(circle,rgba(236,0,140,.16),transparent 62%);pointer-events:none}
+    .diff__top{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:end}
+    .diff h2{font-family:var(--serif);font-weight:500;line-height:1.02;letter-spacing:-.02em;font-size:clamp(2.3rem,5vw,4rem);max-width:16ch}
+    .diff h2 em{font-style:italic;font-weight:400;color:var(--magenta-bright)}
+    .diff__intro{color:var(--muted-dark);font-size:1.08rem;padding-bottom:.5rem}
+    .vlist{margin-top:3.5rem;display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--line-soft)}
+    .vitem{display:flex;gap:1.1rem;padding:1.8rem 0;border-bottom:1px solid var(--line-soft)}
+    .vitem:nth-child(odd){padding-right:2.5rem;border-right:1px solid var(--line-soft)}
+    .vitem:nth-child(even){padding-left:2.5rem}
+    .vitem__n{font-family:var(--mono);font-size:.78rem;color:var(--magenta-bright);padding-top:.25rem}
+    .vitem h3{font-family:var(--serif);font-size:1.35rem;font-weight:500;margin-bottom:.4rem}
+    .vitem p{color:var(--muted-dark);font-size:.96rem}
+    .stats{margin-top:4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;border-top:1px solid var(--line-soft);padding-top:2.5rem}
+    .stat__n{font-family:var(--serif);font-size:clamp(2.6rem,5vw,3.8rem);font-weight:500;line-height:1}
+    .stat__l{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-dark);margin-top:.6rem}
 
-    /* ============ Why PADS (magenta band) ============ */
-    .why{background:var(--magenta);color:#fff}
-    .why .eyebrow{color:rgba(255,255,255,.85)}
-    .why .section__title{color:#fff}
-    .why__lead{margin:14px 0 30px;font-size:1.1rem;max-width:48ch;color:rgba(255,255,255,.92)}
-    .vlist{display:grid;grid-template-columns:1fr;gap:2px;border-radius:var(--r);overflow:hidden}
-    .vitem{background:rgba(255,255,255,.08);padding:22px;display:flex;gap:16px;align-items:flex-start}
-    .vitem__n{font-family:var(--f-mono);font-size:.82rem;font-weight:700;opacity:.7;padding-top:3px}
-    .vitem h3{font-family:var(--f-display);font-weight:700;font-size:1.2rem;margin:0 0 5px}
-    .vitem p{margin:0;color:rgba(255,255,255,.85);font-size:.96rem}
+    /* ============ Agents ============ */
+    .agents__wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:2.5rem}
+    .acard{border:1px solid var(--line);border-radius:18px;padding:2.4rem;background:var(--stone-surface);display:flex;flex-direction:column;gap:.7rem}
+    .acard h3{font-family:var(--serif);font-size:1.7rem;font-weight:500}
+    .acard p{color:var(--muted);margin-bottom:.6rem}
+    .acard .btn{align-self:flex-start;margin-top:auto}
 
-    /* ============ Agents CTA ============ */
-    .agents{background:var(--ink);color:#fff}
-    .agents__card{
-      background:linear-gradient(135deg,var(--ink-soft),#222 70%);
-      border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:30px 24px;
-    }
-    .agents__card + .agents__card{margin-top:16px}
-    .agents .eyebrow{color:var(--magenta)}
-    .agents h3{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,5vw,2rem);line-height:1.05;margin:10px 0 12px}
-    .agents p{color:rgba(255,255,255,.74);margin:0 0 20px;max-width:46ch}
+    /* ============ Newsletter ============ */
+    .news{background:var(--ink);color:#fff;border-radius:24px;padding:clamp(2.5rem,5vw,4rem);
+      display:grid;grid-template-columns:1.2fr 1fr;gap:2.5rem;align-items:center}
+    .news h2{font-family:var(--serif);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:500;line-height:1.05;max-width:16ch}
+    .news p{color:var(--muted-dark);margin-top:.9rem;max-width:42ch}
+    .news__form{display:flex;gap:.5rem;background:rgba(255,255,255,.08);border:1px solid var(--line-soft);border-radius:100px;padding:.4rem}
+    .news__form input{flex:1;background:none;border:0;color:#fff;font-family:var(--sans);font-size:.98rem;padding:.7rem 1.1rem}
+    .news__form input::placeholder{color:rgba(255,255,255,.5)}
 
     /* ============ Footer ============ */
-    .foot{background:#0A0A0C;color:rgba(255,255,255,.7);padding:54px 0 30px}
-    .foot__grid{display:grid;grid-template-columns:1fr;gap:30px}
-    .foot__brand img{height:24px}
-    .foot__brand p{margin:14px 0 0;max-width:40ch;font-size:.92rem}
-    .foot h4{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);margin:0 0 12px}
-    .foot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
-    .foot a:hover{color:#fff}
-    .foot__addr{font-style:normal;font-size:.92rem;line-height:1.7}
-    .foot__bottom{
-      display:flex;flex-direction:column;gap:14px;margin-top:36px;padding-top:22px;
-      border-top:1px solid rgba(255,255,255,.1);font-size:.82rem;
-    }
-    .foot__legal{display:flex;flex-wrap:wrap;gap:8px 16px}
-    .foot__social{display:flex;gap:10px}
-    .foot__social a{
-      width:38px;height:38px;border:1px solid rgba(255,255,255,.18);border-radius:50%;
-      display:grid;place-items:center;transition:.2s var(--ease);
-    }
+    .foot{background:var(--plum);color:rgba(255,255,255,.7);padding:5rem 0 2.5rem}
+    .foot__grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:2.5rem;padding-bottom:3rem;border-bottom:1px solid var(--line-soft)}
+    .foot__brand img{height:26px;filter:brightness(0) invert(1);margin-bottom:1.1rem}
+    .foot__brand p{max-width:34ch;font-size:.95rem}
+    .foot h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin-bottom:1.1rem;font-weight:500}
+    .foot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.7rem;font-size:.95rem}
+    .foot ul a:hover,.foot__addr a:hover{color:var(--magenta-bright)}
+    .foot__addr{font-style:normal;font-size:.95rem;line-height:1.7}
+    .foot__bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;padding-top:2rem;font-size:.85rem}
+    .foot__legal{display:flex;flex-wrap:wrap;gap:1.4rem}
+    .foot__social{display:flex;gap:.8rem}
+    .foot__social a{width:38px;height:38px;border:1px solid var(--line-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.2s}
     .foot__social a:hover{background:var(--magenta);border-color:var(--magenta);color:#fff}
 
-    /* WhatsApp float */
-    .wa{
-      position:fixed;right:16px;bottom:16px;z-index:70;width:54px;height:54px;border-radius:50%;
-      background:#25D366;display:grid;place-items:center;box-shadow:0 12px 30px -8px rgba(37,211,102,.6);
-      transition:transform .2s var(--ease);
-    }
-    .wa:hover{transform:scale(1.06)}
-    .wa svg{width:28px;height:28px}
+    /* ============ WhatsApp float ============ */
+    .wa{position:fixed;right:18px;bottom:18px;z-index:80;width:58px;height:58px;border-radius:50%;
+      background:#25D366;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 14px 30px -8px rgba(0,0,0,.4);transition:transform .25s var(--ease)}
+    .wa:hover{transform:scale(1.07)}
+    .wa svg{width:30px;height:30px}
 
-    /* Reveal */
-    .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+    /* ============ Reveal ============ */
+    .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
     .reveal.in{opacity:1;transform:none}
 
     /* ============ Responsive ============ */
-    @media(min-width:680px){
-      .grid{grid-template-columns:repeat(2,1fr)}
-      .feat{flex-basis:46%}
-      .vlist{grid-template-columns:repeat(2,1fr)}
-      .search__row{display:flex;gap:12px;align-items:flex-end}
-      .search__row .search__field{flex:1;margin-top:0}
-      .search__row .btn{margin-top:0;width:auto;padding-inline:30px}
-      .agents__wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-      .agents__card + .agents__card{margin-top:0}
+    @media(max-width:1024px){
+      .place-grid{grid-template-columns:repeat(2,1fr)}
+      .news{grid-template-columns:1fr}
     }
-    @media(min-width:960px){
-      .nav__links{display:flex;gap:28px;font-weight:600;font-size:.94rem}
-      .nav__links a{color:var(--ink);position:relative;padding:4px 0}
-      .nav__links a::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--magenta);transition:width .25s var(--ease)}
-      .nav__links a:hover::after{width:100%}
-      .nav__login{display:inline-flex}
-      .burger{display:none}
-      .hero__inner{padding-bottom:48px}
-      .hero__layout{display:grid;grid-template-columns:1.25fr .9fr;gap:40px;align-items:end}
-      .search{margin-top:0}
-      .grid{grid-template-columns:repeat(3,1fr)}
-      .feat{flex-basis:31%}
-      .vlist{grid-template-columns:repeat(4,1fr)}
-      .foot__grid{grid-template-columns:1.6fr 1fr 1fr 1.2fr}
-      .foot__bottom{flex-direction:row;align-items:center;justify-content:space-between}
-      .section{padding:84px 0}
+    @media(max-width:860px){
+      .nav,.head__login{display:none}
+      .burger{display:flex}
+      .head__right{display:none}
+      .console{grid-template-columns:1fr;gap:.3rem}
+      .seg{order:-1}
+      .console .btn{margin-top:.2rem}
+      .plate{display:none}
+      .sel-grid{grid-template-columns:1fr;grid-template-rows:none}
+      .prop--lead{grid-row:auto;min-height:380px}
+      .prop:not(.prop--lead){min-height:300px}
+      .selection .s-head{display:block}
+      .grid{grid-template-columns:1fr 1fr}
+      .diff__top{grid-template-columns:1fr;gap:1.5rem}
+      .vlist{grid-template-columns:1fr}
+      .vitem:nth-child(odd){padding-right:0;border-right:0}
+      .vitem:nth-child(even){padding-left:0}
+      .agents__wrap{grid-template-columns:1fr}
+      .foot__grid{grid-template-columns:1fr 1fr}
     }
+    @media(max-width:560px){
+      :root{--gut:18px}
+      .hero h1{font-size:clamp(2.7rem,12vw,3.6rem)}
+      .grid{grid-template-columns:1fr}
+      .place-grid{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr;gap:1.8rem}
+      .foot__grid{grid-template-columns:1fr}
+      .plate{display:none}
+    }
+
     @media(prefers-reduced-motion:reduce){
-      *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+      *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+      .hero__media img{animation:none;transform:none}
       .reveal{opacity:1;transform:none}
+      html{scroll-behavior:auto}
     }
   </style>
 </head>
 <body>
 
   <!-- ============ HEADER ============ -->
-  <header class="nav">
-    <div class="wrap nav__row">
-      <a class="brand" href="/" aria-label="PADS — inicio">
-        <img src="assets/pads-logo.svg" alt="PADS" />
-      </a>
-      <nav class="nav__links" aria-label="Principal">
-        <a href="#venta">Ventas</a>
-        <a href="#arriendo">Arriendos</a>
+  <header class="head" id="head">
+    <div class="wrap head__in">
+      <a class="logo" href="#" aria-label="PADS — inicio"><img src="assets/pads-logo.svg" alt="PADS" /></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="#venta">Comprar</a>
+        <a href="#arriendo">Arrendar</a>
         <a href="#publicar">Publica tu inmueble</a>
-        <a href="#agentes">Únete al equipo</a>
         <a href="#agentes">Brokers</a>
       </nav>
-      <div class="nav__cta">
-        <a class="btn btn--ghost nav__login" href="#">Iniciar sesión</a>
-        <a class="btn btn--magenta" href="#buscar">Explorar</a>
-        <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mmenu">
-          <span></span><span></span><span></span>
-        </button>
+      <div class="head__right">
+        <a class="head__login" href="#">Ingresar</a>
+        <a class="head__cta" href="#buscar">Explorar</a>
       </div>
+      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav"><span></span></button>
     </div>
-    <nav class="mobile-menu" id="mmenu" aria-label="Menú móvil">
-      <a href="#venta">Ventas</a>
-      <a href="#arriendo">Arriendos</a>
-      <a href="#publicar">Publica tu inmueble</a>
-      <a href="#agentes">Únete al equipo</a>
-      <a href="#agentes">Brokers</a>
-      <a class="btn btn--ghost btn--block" href="#">Iniciar sesión</a>
-    </nav>
   </header>
+  <nav class="mnav" id="mnav" aria-label="Menú móvil">
+    <a href="#venta">Comprar</a>
+    <a href="#arriendo">Arrendar</a>
+    <a href="#publicar">Publica tu inmueble</a>
+    <a href="#agentes">Brokers</a>
+    <a href="#">Ingresar</a>
+  </nav>
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="buscar">
     <div class="hero__media">
-      <img src="assets/img/penthouse-hero.jpg" alt="Penthouse de doble altura con grandes ventanales y vista a los cerros de Bogotá" fetchpriority="high" />
+      <img src="assets/img/penthouse-hero.jpg" alt="Penthouse de doble altura con ventanales y vista a Bogotá" fetchpriority="high" />
     </div>
-    <div class="wrap hero__inner">
-      <div class="hero__layout">
-        <div>
-          <p class="eyebrow">Portafolio curado · Colombia</p>
-          <h1>El inmueble correcto, sin <em>perder el tiempo</em>.</h1>
-          <p class="hero__sub">Reunimos las propiedades de las mejores agencias y agentes del país en un solo lugar, con información verificada y asesoría hasta el cierre.</p>
-        </div>
 
-        <!-- Search -->
-        <div class="search" role="search">
-          <div class="seg" id="seg" role="tablist" aria-label="Tipo de operación">
-            <button role="tab" aria-selected="true" data-op="comprar">Comprar</button>
-            <button role="tab" aria-selected="false" data-op="arrendar">Arrendar</button>
-          </div>
-          <div class="search__row">
-            <div class="search__field">
-              <label for="q">¿Dónde buscas?</label>
-              <input id="q" type="text" placeholder="El Chicó, Bogotá · Poblado, Medellín…" autocomplete="off" />
-            </div>
-            <a class="btn btn--magenta btn--block" href="#ultimas">Buscar</a>
-          </div>
-        </div>
-      </div>
+    <aside class="plate" aria-label="Destacado de hoy">
+      <span class="plate__tag">Destacado de hoy</span>
+      <b>Penthouse — San Diego, Bogotá</b>
+      <span class="mono">COP 1.300.000.000 · 161 m²</span>
+    </aside>
 
-      <div class="hero__stats">
-        <div class="stat"><div class="stat__n mono">Miles</div><div class="stat__l">de propiedades curadas</div></div>
-        <div class="stat"><div class="stat__n mono">450+</div><div class="stat__l">agentes y agencias aliadas</div></div>
-        <div class="stat"><div class="stat__n mono">3</div><div class="stat__l">ciudades: Bogotá · Medellín · Cali</div></div>
+    <div class="hero__in">
+      <p class="eyebrow hero__eyebrow">Portafolio curado · Bogotá · Medellín · Cali</p>
+      <h1>Vive en el lugar <em>correcto.</em></h1>
+      <p class="hero__sub">Reunimos lo mejor de las agencias y agentes de Colombia en un solo portafolio: curado, verificado y acompañado hasta el cierre.</p>
+
+      <form class="console" role="search" aria-label="Buscar inmuebles" onsubmit="return false">
+        <div class="seg" id="seg" role="tablist" aria-label="Operación">
+          <button type="button" role="tab" aria-selected="true">Comprar</button>
+          <button type="button" role="tab" aria-selected="false">Arrendar</button>
+        </div>
+        <div class="field">
+          <label for="q">¿Dónde quieres vivir?</label>
+          <input id="q" type="text" placeholder="El Chicó, Bogotá · El Poblado, Medellín…" autocomplete="off" />
+        </div>
+        <div class="field">
+          <label for="t">Tipo</label>
+          <select id="t" aria-label="Tipo de inmueble">
+            <option>Cualquiera</option><option>Apartamento</option><option>Casa</option>
+            <option>Penthouse</option><option>Oficina</option>
+          </select>
+        </div>
+        <button class="btn btn--magenta" type="submit">
+          Buscar
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        </button>
+      </form>
+
+      <div class="popular">
+        <b>Populares</b>
+        <a href="#venta">Chicó</a><a href="#venta">El Poblado</a><a href="#venta">Rosales</a><a href="#venta">Chía</a>
       </div>
     </div>
   </section>
 
-  <!-- ============ CURATED INDEX (signature) ============ -->
-  <section class="section curated" id="venta">
+  <!-- ============ SELECTION ============ -->
+  <section class="section selection" id="venta">
     <div class="wrap">
-      <div class="section__head reveal">
-        <p class="eyebrow">Selección PADS · 01–05</p>
-        <h2 class="section__title">Propiedades destacadas de la semana</h2>
-        <p class="section__lead">Un índice corto y curado. No es todo el inventario: es lo que vale la pena ver primero.</p>
+      <div class="s-head reveal">
+        <div>
+          <p class="eyebrow">La selección de la semana</p>
+          <h2>Lo que vale la pena <em>ver primero.</em></h2>
+        </div>
+        <p class="s-lead">Un índice corto, curado por nuestro equipo. No es todo el inventario: es dónde empezar a mirar.</p>
       </div>
 
-      <div class="rail" id="rail">
-        <article class="feat reveal">
-          <div class="feat__media">
-            <img src="assets/img/ph-lisboa.jpg" alt="Sala de penthouse en Lisboa, Bogotá" loading="lazy" />
-            <span class="feat__idx mono">01</span>
+      <div class="sel-grid">
+        <a class="prop prop--lead reveal" href="#">
+          <img src="assets/img/ph-lisboa.jpg" alt="Sala de penthouse con ventanales en Lisboa, Bogotá" loading="lazy" />
+          <div class="prop__body">
+            <div>
+              <span class="prop__no">Nº 01</span>
+              <div class="prop__loc">Lisboa</div>
+              <div class="prop__meta">Bogotá · Apartamento · Venta y arriendo</div>
+            </div>
+            <div class="prop__price">COP 2.450.000.000<span>15.000.000 / mes</span></div>
           </div>
-          <div class="feat__body">
-            <div class="feat__loc">Lisboa, Bogotá</div>
-            <div class="feat__meta">Apartamento · Venta y arriendo</div>
-            <div class="feat__price mono">COP 2.450.000.000 <span>/ 15.000.000 mes</span></div>
+        </a>
+        <a class="prop reveal" href="#">
+          <img src="assets/img/living-chico.jpg" alt="Sala con lámpara de diseño en El Chicó, Bogotá" loading="lazy" />
+          <div class="prop__body">
+            <div><span class="prop__no">Nº 02</span><div class="prop__loc">El Chicó</div><div class="prop__meta">Bogotá · Apartamento</div></div>
+            <div class="prop__price">COP 2.900.000.000<span>14.000.000 / mes</span></div>
           </div>
-        </article>
-
-        <article class="feat reveal">
-          <div class="feat__media">
-            <img src="assets/img/living-chico.jpg" alt="Sala con lámpara de diseño en El Chicó, Bogotá" loading="lazy" />
-            <span class="feat__idx mono">02</span>
+        </a>
+        <a class="prop reveal" href="#">
+          <img src="assets/img/loft-poblado.jpg" alt="Loft industrial con doble altura en El Poblado, Medellín" loading="lazy" />
+          <div class="prop__body">
+            <div><span class="prop__no">Nº 03</span><div class="prop__loc">El Poblado</div><div class="prop__meta">Medellín · Apartamento</div></div>
+            <div class="prop__price">COP 4.400.000.000</div>
           </div>
-          <div class="feat__body">
-            <div class="feat__loc">El Chicó, Bogotá</div>
-            <div class="feat__meta">Apartamento · Venta y arriendo</div>
-            <div class="feat__price mono">COP 2.900.000.000 <span>/ 14.000.000 mes</span></div>
-          </div>
-        </article>
-
-        <article class="feat reveal">
-          <div class="feat__media">
-            <img src="assets/img/dining-bellasuiza.jpg" alt="Comedor con ventanales en Bella Suiza, Bogotá" loading="lazy" />
-            <span class="feat__idx mono">03</span>
-          </div>
-          <div class="feat__body">
-            <div class="feat__loc">Bella Suiza, Bogotá</div>
-            <div class="feat__meta">Apartamento · Venta</div>
-            <div class="feat__price mono">COP 3.200.000.000</div>
-          </div>
-        </article>
-
-        <article class="feat reveal">
-          <div class="feat__media">
-            <img src="assets/img/terrace-sanjacinto.jpg" alt="Terraza con pérgola y comedor exterior en San Jacinto, Chía" loading="lazy" />
-            <span class="feat__idx mono">04</span>
-          </div>
-          <div class="feat__body">
-            <div class="feat__loc">San Jacinto, Chía</div>
-            <div class="feat__meta">Casa · Venta</div>
-            <div class="feat__price mono">COP 3.850.000.000</div>
-          </div>
-        </article>
-
-        <article class="feat reveal">
-          <div class="feat__media">
-            <img src="assets/img/loft-poblado.jpg" alt="Loft industrial con doble altura en El Poblado, Medellín" loading="lazy" />
-            <span class="feat__idx mono">05</span>
-          </div>
-          <div class="feat__body">
-            <div class="feat__loc">El Poblado, Medellín</div>
-            <div class="feat__meta">Apartamento · Venta</div>
-            <div class="feat__price mono">COP 4.400.000.000</div>
-          </div>
-        </article>
+        </a>
       </div>
-      <p class="rail-hint">→ Desliza para ver las 5</p>
+    </div>
+  </section>
+
+  <!-- ============ EXPLORE BY PLACE ============ -->
+  <section class="section places">
+    <div class="wrap">
+      <div class="s-head reveal">
+        <p class="eyebrow on-dark">Explora por zona</p>
+        <h2>Cada ciudad, <em>su carácter.</em></h2>
+        <p class="s-lead">Desde los cerros de Bogotá hasta las terrazas de Medellín. Empieza por donde te imaginas viviendo.</p>
+      </div>
+      <div class="place-grid">
+        <a class="place reveal" href="#venta">
+          <img src="assets/img/dining-bellasuiza.jpg" alt="Comedor con ventanales en Bogotá" loading="lazy" />
+          <div class="place__body"><div class="place__name">Bogotá</div><div class="place__count">1.240 propiedades</div></div>
+        </a>
+        <a class="place reveal" href="#venta">
+          <img src="assets/img/loft-poblado.jpg" alt="Loft de diseño en Medellín" loading="lazy" />
+          <div class="place__body"><div class="place__name">Medellín</div><div class="place__count">860 propiedades</div></div>
+        </a>
+        <a class="place reveal" href="#venta">
+          <img src="assets/img/living-chico.jpg" alt="Sala luminosa en Cali" loading="lazy" />
+          <div class="place__body"><div class="place__name">Cali</div><div class="place__count">410 propiedades</div></div>
+        </a>
+        <a class="place reveal" href="#venta">
+          <img src="assets/img/terrace-sanjacinto.jpg" alt="Terraza con pérgola en Chía" loading="lazy" />
+          <div class="place__body"><div class="place__name">Chía</div><div class="place__count">175 propiedades</div></div>
+        </a>
+      </div>
     </div>
   </section>
 
   <!-- ============ LISTINGS ============ -->
   <section class="section" id="ultimas">
     <div class="wrap">
-      <div class="section__head reveal" id="arriendo">
+      <div class="s-head reveal" id="arriendo">
         <p class="eyebrow">Inventario en vivo</p>
-        <h2 class="section__title">Últimas publicaciones</h2>
-        <p class="section__lead">Información actualizada y verificada por el equipo back-office de PADS.</p>
+        <h2>Últimas publicaciones.</h2>
+        <p class="s-lead">Información actualizada y verificada por el back-office de PADS.</p>
       </div>
 
       <div class="chips" role="group" aria-label="Filtros">
         <button class="chip" aria-pressed="true">Destacados</button>
-        <button class="chip" aria-pressed="false">PADS Collección</button>
+        <button class="chip" aria-pressed="false">PADS Colección</button>
         <button class="chip" aria-pressed="false">Penthouse</button>
         <button class="chip" aria-pressed="false">Terrazas</button>
-        <button class="chip" aria-pressed="false">Jardines</button>
+        <button class="chip" aria-pressed="false">Arriendo</button>
       </div>
 
       <div class="grid">
@@ -559,136 +565,138 @@
           <div class="card__media">
             <img src="assets/img/dining-bellasuiza.jpg" alt="Apartamento en Chicó Norte III, Bogotá" loading="lazy" />
             <span class="badge">Destacado</span>
-            <button class="fav" aria-label="Guardar">♡</button>
+            <button class="fav" aria-label="Guardar propiedad">♡</button>
           </div>
           <div class="card__body">
             <div class="card__price">COP 950.000.000</div>
-            <div class="card__loc">Chicó Norte III <span>Bogotá</span></div>
-            <div class="card__specs"><span><b>2</b> Alc.</span><span><b>90</b> m²</span><span><b>2</b> Parq.</span></div>
+            <div class="card__loc">Chicó Norte III<span>Bogotá</span></div>
+            <div class="card__specs"><span><b>2</b> alc.</span><span><b>90</b> m²</span><span><b>2</b> parq.</span></div>
           </div>
         </article>
-
         <article class="card reveal">
           <div class="card__media">
             <img src="assets/img/living-chico.jpg" alt="Casa amplia en Aguacatal, Cali" loading="lazy" />
             <span class="badge">Destacado</span>
-            <button class="fav" aria-label="Guardar">♡</button>
+            <button class="fav" aria-label="Guardar propiedad">♡</button>
           </div>
           <div class="card__body">
-            <div class="card__price">COP 5.520.000.000 <small>/ 25.000.000 mes</small></div>
-            <div class="card__loc">Aguacatal <span>Cali</span></div>
-            <div class="card__specs"><span><b>5</b> Alc.</span><span><b>649</b> m²</span><span><b>4</b> Parq.</span></div>
+            <div class="card__price">COP 5.520.000.000 <small>· 25.000.000/mes</small></div>
+            <div class="card__loc">Aguacatal<span>Cali</span></div>
+            <div class="card__specs"><span><b>5</b> alc.</span><span><b>649</b> m²</span><span><b>4</b> parq.</span></div>
           </div>
         </article>
-
         <article class="card reveal">
           <div class="card__media">
             <img src="assets/img/kitchen-cabrera.jpg" alt="Apartamento con cocina de diseño en Rincón del Chicó, Bogotá" loading="lazy" />
             <span class="badge">Destacado</span>
-            <button class="fav" aria-label="Guardar">♡</button>
+            <button class="fav" aria-label="Guardar propiedad">♡</button>
           </div>
           <div class="card__body">
-            <div class="card__price">COP 5.200.000 <small>mes</small></div>
-            <div class="card__loc">Rincón del Chicó <span>Bogotá</span></div>
-            <div class="card__specs"><span><b>3</b> Alc.</span><span><b>112</b> m²</span><span><b>2</b> Parq.</span></div>
+            <div class="card__price">COP 5.200.000 <small>/mes</small></div>
+            <div class="card__loc">Rincón del Chicó<span>Bogotá</span></div>
+            <div class="card__specs"><span><b>3</b> alc.</span><span><b>112</b> m²</span><span><b>2</b> parq.</span></div>
           </div>
         </article>
-
         <article class="card reveal">
           <div class="card__media">
             <img src="assets/img/ph-lisboa.jpg" alt="Apartamento exclusivo en La Cabrera, Bogotá" loading="lazy" />
             <span class="badge badge--pads">Exclusivo PADS</span>
-            <button class="fav" aria-label="Guardar">♡</button>
+            <button class="fav" aria-label="Guardar propiedad">♡</button>
           </div>
           <div class="card__body">
-            <div class="card__price">COP 9.000.000 <small>mes</small></div>
-            <div class="card__loc">La Cabrera <span>Bogotá</span></div>
-            <div class="card__specs"><span><b>2</b> Alc.</span><span><b>89</b> m²</span><span><b>2</b> Parq.</span></div>
+            <div class="card__price">COP 9.000.000 <small>/mes</small></div>
+            <div class="card__loc">La Cabrera<span>Bogotá</span></div>
+            <div class="card__specs"><span><b>2</b> alc.</span><span><b>89</b> m²</span><span><b>2</b> parq.</span></div>
           </div>
         </article>
-
         <article class="card reveal">
           <div class="card__media">
             <img src="assets/img/terrace-sanjacinto.jpg" alt="Apartamento con terraza en Los Rosales, Bogotá" loading="lazy" />
             <span class="badge">Terraza</span>
-            <button class="fav" aria-label="Guardar">♡</button>
+            <button class="fav" aria-label="Guardar propiedad">♡</button>
           </div>
           <div class="card__body">
-            <div class="card__price">COP 20.000.000 <small>mes</small></div>
-            <div class="card__loc">Los Rosales <span>Bogotá</span></div>
-            <div class="card__specs"><span><b>3</b> Alc.</span><span><b>248</b> m²</span><span><b>4</b> Parq.</span></div>
+            <div class="card__price">COP 20.000.000 <small>/mes</small></div>
+            <div class="card__loc">Los Rosales<span>Bogotá</span></div>
+            <div class="card__specs"><span><b>3</b> alc.</span><span><b>248</b> m²</span><span><b>4</b> parq.</span></div>
           </div>
         </article>
-
         <article class="card reveal">
           <div class="card__media">
             <img src="assets/img/penthouse-hero.jpg" alt="Penthouse con vista en San Diego, Bogotá" loading="lazy" />
             <span class="badge">Destacado</span>
-            <button class="fav" aria-label="Guardar">♡</button>
+            <button class="fav" aria-label="Guardar propiedad">♡</button>
           </div>
           <div class="card__body">
             <div class="card__price">COP 1.300.000.000</div>
-            <div class="card__loc">San Diego <span>Bogotá</span></div>
-            <div class="card__specs"><span><b>2</b> Alc.</span><span><b>161</b> m²</span><span><b>2</b> Parq.</span></div>
+            <div class="card__loc">San Diego<span>Bogotá</span></div>
+            <div class="card__specs"><span><b>2</b> alc.</span><span><b>161</b> m²</span><span><b>2</b> parq.</span></div>
           </div>
         </article>
       </div>
 
-      <div class="more">
-        <a class="btn btn--ink" href="#">Ver todas las propiedades</a>
-      </div>
+      <div class="more"><a class="btn btn--ink" href="#">Ver todas las propiedades</a></div>
     </div>
   </section>
 
-  <!-- ============ WHY PADS ============ -->
-  <section class="section why">
+  <!-- ============ DIFFERENCE ============ -->
+  <section class="section diff">
     <div class="wrap">
-      <div class="reveal">
-        <p class="eyebrow">¿Por qué PADS?</p>
-        <h2 class="section__title">Un solo lugar, sin ruido.</h2>
-        <p class="why__lead">Nos aliamos con las mejores agencias y agentes de Colombia para ofrecerte un portafolio curado, con información actualizada y respaldo real en el cierre.</p>
+      <div class="diff__top reveal">
+        <h2>Un portafolio curado, <em>no otro portal saturado.</em></h2>
+        <p class="diff__intro">Nos aliamos con las mejores agencias y agentes de Colombia para que veas menos ruido y mejores casas — con información real y respaldo hasta firmar.</p>
       </div>
       <div class="vlist reveal">
-        <div class="vitem">
-          <span class="vitem__n">01</span>
-          <div><h3>Portafolio curado</h3><p>Miles de propiedades verificadas en un mismo lugar. Deja de saltar entre portales.</p></div>
+        <div class="vitem"><span class="vitem__n">01</span><div><h3>Portafolio curado</h3><p>Miles de propiedades verificadas en un solo lugar. Deja de saltar entre portales.</p></div></div>
+        <div class="vitem"><span class="vitem__n">02</span><div><h3>Asesores que acompañan</h3><p>Un asesor contigo en cada paso, no solo al inicio de la búsqueda.</p></div></div>
+        <div class="vitem"><span class="vitem__n">03</span><div><h3>Back-office de cierre</h3><p>El equipo de PADS respalda todo el proceso hasta la firma.</p></div></div>
+        <div class="vitem"><span class="vitem__n">04</span><div><h3>Información verificada</h3><p>Datos al día: lo que ves es lo que está disponible hoy.</p></div></div>
+      </div>
+      <div class="stats reveal">
+        <div><div class="stat__n mono">12.000+</div><div class="stat__l">Propiedades curadas</div></div>
+        <div><div class="stat__n mono">450+</div><div class="stat__l">Agencias y agentes aliados</div></div>
+        <div><div class="stat__n mono">3</div><div class="stat__l">Ciudades · Bogotá, Medellín, Cali</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ AGENTS ============ -->
+  <section class="section" id="agentes">
+    <div class="wrap">
+      <div class="s-head reveal">
+        <p class="eyebrow">Para agentes y agencias</p>
+        <h2>Crece con PADS, <em>sin perder tu independencia.</em></h2>
+      </div>
+      <div class="agents__wrap">
+        <div class="acard reveal" id="publicar">
+          <p class="eyebrow">Agentes</p>
+          <h3>¿Eres agente inmobiliario?</h3>
+          <p>Lleva tu portafolio a más compradores calificados y suma el respaldo de cierre de PADS.</p>
+          <a class="btn btn--magenta" href="https://wa.me/573142007942?text=Hola%20PADS,%20soy%20agente%20y%20quiero%20más%20información">Me interesa</a>
         </div>
-        <div class="vitem">
-          <span class="vitem__n">02</span>
-          <div><h3>Asesores que acompañan</h3><p>Nuestros asesores están contigo en cada paso, no solo al inicio.</p></div>
-        </div>
-        <div class="vitem">
-          <span class="vitem__n">03</span>
-          <div><h3>Back-office de cierre</h3><p>El equipo de PADS respalda todo el proceso hasta firmar.</p></div>
-        </div>
-        <div class="vitem">
-          <span class="vitem__n">04</span>
-          <div><h3>Información actualizada</h3><p>Datos verificados: lo que ves es lo que está disponible hoy.</p></div>
+        <div class="acard reveal">
+          <p class="eyebrow">Brokers y agencias</p>
+          <h3>¿Tienes una agencia?</h3>
+          <p>Conecta tu inventario con una audiencia mayor y acelera tus cierres con nuestro equipo.</p>
+          <a class="btn btn--ink" href="https://wa.me/573142007942?text=Hola%20PADS,%20tengo%20una%20agencia%20y%20quiero%20hablar%20con%20el%20equipo">Hablar con el equipo</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ AGENTS / BROKERS ============ -->
-  <section class="section agents" id="agentes">
+  <!-- ============ NEWSLETTER ============ -->
+  <section class="section" style="padding-top:0">
     <div class="wrap">
-      <div class="section__head reveal">
-        <p class="eyebrow">Acelera tu negocio inmobiliario</p>
-        <h2 class="section__title" style="color:#fff">Crece con PADS, sin perder tu independencia.</h2>
-      </div>
-      <div class="agents__wrap">
-        <div class="agents__card reveal" id="publicar">
-          <p class="eyebrow">Agentes</p>
-          <h3>¿Eres agente inmobiliario?</h3>
-          <p>Conoce cómo PADS te ayuda a crecer tu negocio con un portafolio de mayor alcance y respaldo de cierre.</p>
-          <a class="btn btn--magenta" href="#">Me interesa</a>
+      <div class="news reveal">
+        <div>
+          <h2>Recibe la selección de la semana.</h2>
+          <p>Las mejores propiedades curadas por PADS, directo a tu correo. Sin spam, solo lo que vale la pena ver.</p>
         </div>
-        <div class="agents__card reveal">
-          <p class="eyebrow">Brokers y agencias</p>
-          <h3>¿Tienes una agencia?</h3>
-          <p>Lleva tu inventario a más compradores calificados y acelera tus cierres con el back-office de PADS.</p>
-          <a class="btn btn--light" href="#">Hablar con el equipo</a>
-        </div>
+        <form class="news__form" onsubmit="return false" aria-label="Suscripción al boletín">
+          <label for="email" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Correo electrónico</label>
+          <input id="email" type="email" placeholder="tu@correo.com" autocomplete="email" />
+          <button class="btn btn--magenta" type="submit">Suscribirme</button>
+        </form>
       </div>
     </div>
   </section>
@@ -749,17 +757,22 @@
   </a>
 
   <script>
+    // Header: solid on scroll
+    var head=document.getElementById('head');
+    var onScroll=function(){ head.classList.toggle('solid', window.scrollY>40); };
+    onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+
     // Mobile menu
-    var burger=document.getElementById('burger'),mmenu=document.getElementById('mmenu');
+    var burger=document.getElementById('burger'),mnav=document.getElementById('mnav');
     burger.addEventListener('click',function(){
-      var open=mmenu.classList.toggle('open');
+      var open=mnav.classList.toggle('open');
       burger.setAttribute('aria-expanded',open);
     });
-    mmenu.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click',function(){mmenu.classList.remove('open');burger.setAttribute('aria-expanded','false');});
+    mnav.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click',function(){mnav.classList.remove('open');burger.setAttribute('aria-expanded','false');});
     });
 
-    // Operation segment (Comprar / Arrendar)
+    // Operation segment
     var seg=document.getElementById('seg');
     seg.querySelectorAll('button').forEach(function(b){
       b.addEventListener('click',function(){

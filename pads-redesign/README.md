@@ -38,19 +38,22 @@ Pruébalo en el móvil (o con DevTools en modo responsive): **está diseñado de
 
 ## Dirección de diseño
 
-Tomamos la marca real de PADS y la llevamos a un territorio **editorial**, como una revista de
-arquitectura: la fotografía manda y el magenta de PADS es el único acento fuerte.
+Reinvención total de la home, no un reskin del sitio actual. Concepto: **PADS como casa
+curatorial / concierge** — fotografía cinematográfica a sangre, búsqueda como protagonista y
+una voz editorial premium (al nivel de Sotheby's o Compass), conservando el magenta de marca.
 
-- **Color** — Magenta PADS `#EC008C` como firma (usado con disciplina), tinta `#0E0E11`,
-  papel cálido `#F7F5F1` y azul de marca `#006FE8` solo para foco/interacción.
-- **Tipografía** — *Bricolage Grotesque* para titulares con carácter, *Inter Tight* para
-  interfaz (la fuente real de PADS) y *JetBrains Mono* para precios y datos —los precios en
-  monoespaciada se leen como una ficha técnica, apropiado para inmuebles—.
-- **Elemento de firma** — *"Propiedades destacadas"* presentadas como un **índice curado y
-  numerado (01–05)**, que comunica de un vistazo la promesa central de PADS: un portafolio
-  curado, no otro portal saturado.
-- **Mobile-first** — carrusel con *scroll-snap* en táctil, filtros deslizables, navegación con
-  menú hamburguesa y CTAs a ancho completo en pantallas pequeñas.
+- **Color** — Magenta PADS `#EC008C` como firma (usado con disciplina), tinta `#16121A`,
+  papel cálido `#FAF7F3` y **vino profundo `#1C0E1A`** para las secciones cinematográficas.
+- **Tipografía** — *Fraunces* (serif editorial de alto contraste) para titulares con carácter,
+  *Inter Tight* para interfaz (la fuente real de PADS) y *JetBrains Mono* para precios y datos.
+- **Elemento de firma** — la **placa técnica** (tipo cajetín de un plano arquitectónico): un
+  bloque monoespaciado con ubicación, precio y m² presente en el hero y en cada inmueble. Más
+  la **consola de búsqueda** superpuesta al hero: buscar es el CTA, no un carrusel.
+- **Arquitectura nueva** — hero cinematográfico con consola + búsquedas populares · selección
+  editorial asimétrica · **explorar por ciudad** · inventario en vivo · franja de diferencia y
+  cifras · captación de agentes · boletín. Estructura distinta a la del sitio actual.
+- **Mobile-first** — consola apilada a ancho completo, filtros deslizables, menú hamburguesa,
+  cabecera que se solidifica al hacer scroll.
 
 ### Accesibilidad y rendimiento
 - Foco de teclado visible, `prefers-reduced-motion` respetado, jerarquía semántica correcta.
