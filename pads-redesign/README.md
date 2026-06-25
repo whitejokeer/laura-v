@@ -17,6 +17,8 @@ Esta carpeta es una propuesta comercial: una demo navegable + una auditoría SEO
 | `INFORME-SEO.md` | Auditoría SEO del sitio actual con hallazgos priorizados y plan de acción. |
 | `assets/` | Logo, iconos y fotografías reales descargadas del sitio (optimizadas para web). |
 | `robots.txt`, `sitemap.xml`, `site.webmanifest` | Correcciones SEO de ejemplo, listas para producción. |
+| `shots/` | Pantallazos del rediseño (móvil y escritorio). |
+| `shoot.js`, `fonts/` | Script de captura con Playwright + fuentes locales para renderizar sin conexión. |
 
 ---
 
