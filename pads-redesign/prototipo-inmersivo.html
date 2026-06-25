@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1C0E1A" />
+<title>Penthouse San Diego — Recorrido inmersivo | PADS</title>
+
+<!--
+  ============================================================================
+  PADS · Prototipo de venta inmobiliaria inmersiva (UNA sola página, UN inmueble)
+  Tesis: la web puede hacer ~70% de la venta antes de la visita física.
+
+  ENTREGA: archivo React único y autocontenido (JSX inline vía Babel Standalone).
+  Sin backend. Sin Three.js/WebGL. Sin <video>. Mobile-first.
+
+  ── QUÉ ES REAL vs PLACEHOLDER ──────────────────────────────────────────────
+  REAL (lógica lista para producción):
+    • Motor "image-sequence on scroll": frame atado a la posición de scroll,
+      con rAF, robusto al devolverse/repetir (técnica de las product pages de Apple).
+    • Precarga progresiva con barra de progreso + fallback a imagen estática
+      (incl. detección de conexión lenta / save-data).
+    • HOOK DE COMPORTAMIENTO: detección de dwell (detenerse) y repeat (repetir
+      sección) que dispara el nudge del asistente. (Ver "BEHAVIOR HOOK" abajo.)
+    • Patrón de calificación conversacional (estado, mensajes, quick-replies).
+    • Aparición del CTA de visita SOLO después de construir deseo.
+  PLACEHOLDER / SEED DATA (se reemplaza en producción):
+    • Los 48 frames se DIBUJAN en canvas (escenas abstractas por capítulo).
+      En producción se sustituyen por una secuencia fotográfica/render real
+      (JPEGs numerados), idéntico patrón de carga.
+    • Datos del inmueble (precio, área, zona) = seed.
+    • Respuestas de "Kory" = mock (sin NLP/LLM); marcado el punto de inserción.
+  ============================================================================
+-->
+
+<!-- React + Babel por CDN (prototipo sin build). Para uso 100% offline, vendoriza estos 3 scripts. -->
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --ink:#16121A;--plum:#1C0E1A;--paper:#FAF7F3;--stone:#F1ECE3;
+    --magenta:#EC008C;--magenta-bright:#FF35A8;--line:#E4DDD2;
+    --muted:#5B554C;--muted-dark:#C3B7C2;
+    --serif:"Fraunces",Georgia,serif;--sans:"Inter Tight",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;--ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--ink);color:#fff;font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3{margin:0;font-weight:500}
+  p{margin:0}
+  button{font-family:inherit;cursor:pointer;border:0}
+  :focus-visible{outline:3px solid var(--magenta-bright);outline-offset:2px}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .serif{font-family:var(--serif)}
+
+  /* ---- Preload overlay ---- */
+  .preload{position:fixed;inset:0;z-index:120;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;transition:opacity .6s var(--ease)}
+  .preload.done{opacity:0;pointer-events:none}
+  .preload__logo{font-family:var(--serif);font-size:1.6rem;letter-spacing:.02em}
+  .preload__bar{width:min(74vw,320px);height:3px;background:rgba(255,255,255,.14);border-radius:3px;overflow:hidden}
+  .preload__fill{height:100%;background:var(--magenta);width:0;transition:width .2s linear}
+  .preload__pct{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--muted-dark)}
+
+  /* ---- Tour ---- */
+  .tour{position:relative}
+  .tour__sticky{position:sticky;top:0;height:100svh;overflow:hidden}
+  .tour__canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .tour__poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+  .tour__sticky.fallback .tour__canvas{display:none}
+  .tour__sticky.fallback .tour__poster{display:block}
+  /* legibility scrim */
+  .tour__scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(18,8,16,.45) 0%,rgba(18,8,16,0) 26%,rgba(18,8,16,0) 52%,rgba(18,8,16,.82) 100%)}
+
+  /* chapter overlays */
+  .chap{position:absolute;left:0;right:0;bottom:0;padding:0 22px calc(env(safe-area-inset-bottom,0) + 30px);pointer-events:none}
+  .chap__item{position:absolute;left:22px;right:22px;bottom:30px;opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .chap__item.on{opacity:1;transform:none}
+  .chap__ey{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta-bright);margin-bottom:.6rem}
+  .chap__t{font-family:var(--serif);font-size:clamp(2rem,7vw,3.4rem);line-height:1.02;letter-spacing:-.02em;max-width:18ch}
+  .chap__t em{font-style:italic;color:var(--magenta-bright)}
+  .chap__sub{margin-top:.7rem;font-size:1rem;color:rgba(255,255,255,.86);max-width:34ch}
+  /* key data inline in the flow (not a spec sheet) */
+  .chap__data{display:flex;gap:1.3rem;flex-wrap:wrap;margin-top:1.1rem;font-family:var(--mono);font-size:.8rem}
+  .chap__data b{font-size:1.15rem;font-weight:600;display:block}
+  .chap__data span{color:var(--muted-dark);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase}
+
+  /* top: brand + chapter progress dots */
+  .tour__hud{position:absolute;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top,0) + 16px) 22px 0;display:flex;align-items:center;justify-content:space-between;z-index:3}
+  .tour__brand{font-family:var(--serif);font-weight:500;font-size:1.15rem;letter-spacing:.04em}
+  .dots{display:flex;gap:7px}
+  .dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);transition:background .3s,transform .3s}
+  .dots i.on{background:var(--magenta-bright);transform:scale(1.3)}
+
+  /* scroll cue (hero) */
+  .cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.8);transition:opacity .4s}
+  .cue svg{animation:bob 1.8s var(--ease) infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+  /* ---- Nudge (BEHAVIOR HOOK output) ---- */
+  .nudge{position:fixed;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0) + 14px);z-index:90;display:flex;gap:.8rem;align-items:flex-start;background:rgba(28,14,26,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:.9rem 1rem;box-shadow:0 18px 50px -20px rgba(0,0,0,.7);transform:translateY(150%);transition:transform .5s var(--ease);max-width:440px;margin-inline:auto}
+  .nudge.show{transform:none}
+  .nudge__av{width:34px;height:34px;border-radius:50%;background:var(--magenta);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:.95rem}
+  .nudge__b{flex:1;min-width:0}
+  .nudge__b p{font-size:.9rem;line-height:1.4}
+  .nudge__b small{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta-bright)}
+  .nudge__act{margin-top:.5rem;display:flex;gap:.5rem}
+  .nudge__act button{font-size:.78rem;font-weight:600;padding:.45rem .8rem;border-radius:9px}
+  .nudge__yes{background:var(--magenta);color:#fff}
+  .nudge__no{background:rgba(255,255,255,.1);color:#fff}
+  .nudge__x{background:none;color:rgba(255,255,255,.5);font-size:1.1rem;line-height:1;padding:.1rem .3rem}
+
+  /* ---- Kory qualification ---- */
+  .kory{background:var(--paper);color:var(--ink);padding:clamp(2.5rem,7vw,5rem) 22px}
+  .kory__wrap{max-width:560px;margin-inline:auto}
+  .kory__head{text-align:center;margin-bottom:1.8rem}
+  .kory__ey{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:.8rem}
+  .kory__head h2{font-family:var(--serif);font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.05}
+  .kory__panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:1.2rem;box-shadow:0 30px 60px -40px rgba(20,8,18,.4)}
+  .msgs{display:flex;flex-direction:column;gap:.7rem;min-height:120px}
+  .msg{max-width:84%;padding:.7rem .95rem;border-radius:16px;font-size:.95rem;line-height:1.45;animation:pop .35s var(--ease)}
+  @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .msg--bot{align-self:flex-start;background:var(--stone);border-bottom-left-radius:5px}
+  .msg--me{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:5px}
+  .msg__who{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+  .msg__av{width:26px;height:26px;border-radius:50%;background:var(--magenta);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:.8rem}
+  .msg__who b{font-size:.82rem}
+  .msg__who span{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--magenta)}
+  .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  .chips button{background:#fff;border:1px solid var(--line);border-radius:100px;padding:.55rem 1rem;font-size:.88rem;font-weight:500;color:var(--ink);transition:.2s}
+  .chips button:hover{border-color:var(--magenta);color:var(--magenta)}
+  .kory__form{display:flex;gap:.5rem;margin-top:1rem}
+  .kory__form input{flex:1;border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;font-family:var(--sans);font-size:.95rem;background:var(--paper)}
+  .kory__send{background:var(--magenta);color:#fff;border-radius:12px;padding:0 1.1rem;font-weight:600}
+  .typing{display:flex;gap:4px;padding:.8rem .95rem;align-self:flex-start}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#bbb;animation:blink 1.2s infinite}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+
+  /* ---- Schedule CTA (appears after desire built) ---- */
+  .cta{background:var(--plum);color:#fff;text-align:center;padding:clamp(3rem,8vw,6rem) 22px;position:relative;overflow:hidden}
+  .cta::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:80%;height:120%;background:radial-gradient(circle,rgba(236,0,140,.18),transparent 60%)}
+  .cta__in{position:relative;max-width:560px;margin-inline:auto;opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .cta__in.on{opacity:1;transform:none}
+  .cta__ey{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta-bright);margin-bottom:1rem}
+  .cta h2{font-family:var(--serif);font-size:clamp(2rem,6vw,3.2rem);line-height:1.04;letter-spacing:-.02em}
+  .cta h2 em{font-style:italic;color:var(--magenta-bright)}
+  .cta p{color:var(--muted-dark);margin:1.1rem auto 2rem;max-width:42ch}
+  .cta__btns{display:flex;flex-direction:column;gap:.7rem;max-width:340px;margin-inline:auto}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-weight:600;font-size:1rem;padding:1.05rem 1.6rem;border-radius:13px;min-height:52px;transition:transform .25s var(--ease),background .25s}
+  .btn--magenta{background:var(--magenta);color:#fff}
+  .btn--magenta:hover{background:var(--magenta-bright);transform:translateY(-2px)}
+  .btn--ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+  .btn--ghost:hover{background:rgba(255,255,255,.08)}
+  .cta__fine{margin-top:1.4rem;font-size:.82rem;color:var(--muted-dark)}
+  .foot{padding:2rem;text-align:center;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--muted-dark);background:var(--plum)}
+
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+  }
+  @media(min-width:760px){
+    .chap__item{left:48px;bottom:54px;max-width:640px}
+    .tour__hud{padding-left:48px;padding-right:48px}
+    .cta__btns{flex-direction:row;justify-content:center;max-width:none}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ============================================================================
+   SEED DATA — datos del inmueble (placeholder; reemplazar por datos reales)
+   ============================================================================ */
+const PROPERTY = {
+  name: "Penthouse en San Diego",
+  zone: "Santa Fe, Bogotá",
+  price: "COP 1.300M",
+  area: "161 m²",
+  beds: 2, baths: 3, stratum: 4,
+};
+
+/* CHAPTERS — cada capítulo es un tramo del scroll. El micro-texto aparece
+   sincronizado con el frame. Los "data" se integran en el flujo del recorrido. */
+const CHAPTERS = [
+  { key:"llegada", ey:"01 · Llegada",  title:<>San Diego.<br/><em>Llegas a casa.</em></>,
+    sub:"Piso 18. La ciudad queda abajo; los cerros, al frente.", data:null,
+    nudge:"¿Quieres que te cuente cómo es vivir en esta zona?" },
+  { key:"sala", ey:"02 · La sala", title:<>Doble altura,<br/>luz de tarde.</>,
+    sub:"Ventanal de piso a techo. El salón principal abre a la terraza.",
+    data:[["32 m²","Salón"],["6,2 m","Puntal"]],
+    nudge:"Esta sala es de las más vistas. ¿Te muestro el recorrido otra vez?" },
+  { key:"cocina", ey:"03 · La cocina", title:<>Isla en mármol,<br/>abierta a la vida.</>,
+    sub:"Cocina abierta con isla central y despensa. Hecha para recibir.",
+    data:[["14 m²","Cocina"],["Isla","Mármol"]],
+    /* BEHAVIOR HOOK — nudge seed pedido explícitamente en el brief */
+    nudge:"Esta cocina es la más vista por compradores como tú. ¿Te muestro algo similar?" },
+  { key:"alcoba", ey:"04 · La alcoba", title:<>La alcoba principal,<br/>y la mañana.</>,
+    sub:"Suite con vestier y baño en mármol. Despiertas con los cerros.",
+    data:[["24 m²","Alcoba ppal."],["+ vestier","Baño suite"]],
+    nudge:"¿Te gustaría ver el plano con medidas de las alcobas?" },
+  { key:"balcon", ey:"05 · El balcón", title:<>Tu vista.<br/><em>El cierre del día.</em></>,
+    sub:"Terraza privada al occidente. El atardecer es parte de la casa.",
+    data:[[PROPERTY.area,"Privados"],[PROPERTY.beds+" hab","Estrato "+PROPERTY.stratum],[PROPERTY.price,"Precio"]],
+    nudge:"Te imaginas aquí, ¿cierto? Démosle forma a la visita." },
+];
+
+const N_FRAMES = 48;            // nº de frames precargados (Apple usa cientos; 48 basta para el proto)
+const TOUR_SCREENS = 6;         // alto del recorrido en múltiplos de viewport
+
+/* ============================================================================
+   FRAME GENERATOR — PLACEHOLDER. Dibuja cada frame en canvas (escena abstracta
+   por capítulo). En producción: secuencia fotográfica/render real (JPEGs).
+   Patrón de carga idéntico: se generan JPEGs y se precargan como <img>.
+   ============================================================================ */
+function palette(c){
+  // [skyTop, skyBot, wall, floor, view, accent]
+  return [
+    ["#2b2740","#6b5a73","#3a3346","#241f2e","#caa6c0","#ef5aa8"], // llegada (dusk exterior)
+    ["#efe7dd","#d8c7bd","#cdbdb2","#3a2f2c","#bcd0e0","#ec008c"], // sala (warm)
+    ["#eef1f3","#d4dade","#c3ccd2","#2e3338","#aebfca","#ec008c"], // cocina (cool)
+    ["#e9ddd6","#cdb6ac","#b89f97","#332724","#d8bfae","#ec008c"], // alcoba (warm dim)
+    ["#ffd9a0","#ff9d6e","#caa07f","#2a201c","#ffe2b0","#ec008c"], // balcón (golden)
+  ][c];
+}
+function drawScene(ctx, W, H, c, t){
+  const P = palette(c);
+  // sky / back wall gradient
+  let g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,P[0]); g.addColorStop(1,P[1]);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+  const cx = W*(0.5 + (t-0.5)*0.10);   // slight horizontal dolly with t
+  const horizon = H*(0.52 + (c===0?0:0.04) - t*0.05);
+
+  if(c===0){
+    // EXTERIOR: distant ridges + building facade approaching (scale with t)
+    for(let r=0;r<3;r++){
+      ctx.fillStyle = `rgba(40,30,55,${0.25+r*0.2})`;
+      ctx.beginPath(); ctx.moveTo(0,H);
+      for(let x=0;x<=W;x+=20){ ctx.lineTo(x, horizon + Math.sin(x*0.008 + r)*22 + r*26); }
+      ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+    }
+    const bw = W*(0.34 + t*0.30), bh = H*(0.5 + t*0.34), bx = cx-bw/2, by = H-bh;
+    ctx.fillStyle="#1d1830"; ctx.fillRect(bx,by,bw,bh);
+    // window grid (warm lights)
+    const cols=Math.max(3,Math.floor(bw/46)), rows=Math.max(4,Math.floor(bh/52));
+    for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+      ctx.fillStyle = (Math.sin(i*3+j*7)>0.3)? "rgba(255,210,150,.85)":"rgba(120,140,180,.35)";
+      ctx.fillRect(bx+8+i*(bw-16)/cols, by+10+j*(bh-20)/rows, (bw-16)/cols-7, (bh-20)/rows-9);
+    }
+  } else {
+    // INTERIOR: floor (perspective), big window with view, furniture silhouettes
+    ctx.fillStyle=P[3];
+    ctx.beginPath(); ctx.moveTo(0,H); ctx.lineTo(W,H);
+    ctx.lineTo(W*0.78, horizon+H*0.16); ctx.lineTo(W*0.22, horizon+H*0.16); ctx.closePath(); ctx.fill();
+    // back wall
+    ctx.fillStyle=P[2]; ctx.fillRect(W*0.22, horizon-H*0.30, W*0.56, H*0.46+H*0.16 - (horizon-H*0.30 - (horizon+H*0.16)) );
+    // window with the city/mountain view (grows toward balcony)
+    const ww = W*(0.30 + (c===4?0.5:0.16)+t*0.06), wx = (c===4? cx-ww/2 : W*0.50), wy = horizon-H*0.26, wh=H*(0.40+ (c===4?0.18:0));
+    let vg = ctx.createLinearGradient(0,wy,0,wy+wh);
+    vg.addColorStop(0,P[4]); vg.addColorStop(1, c===4? "#ff8d5e":"#8aa6bd");
+    ctx.fillStyle=vg; ctx.fillRect(wx,wy,ww,wh);
+    // distant skyline in the window
+    ctx.fillStyle="rgba(40,40,60,.35)";
+    for(let x=wx;x<wx+ww;x+=14){ const bh=Math.abs(Math.sin(x*0.05))*wh*0.4; ctx.fillRect(x, wy+wh-bh, 10, bh); }
+    if(c!==4){ ctx.strokeStyle="rgba(0,0,0,.25)"; ctx.lineWidth=3; ctx.strokeRect(wx,wy,ww,wh);
+      ctx.beginPath(); ctx.moveTo(wx+ww/2,wy); ctx.lineTo(wx+ww/2,wy+wh); ctx.stroke(); }
+    // furniture per room
+    ctx.fillStyle="rgba(0,0,0,.30)";
+    if(c===1){ ctx.fillRect(W*0.26, H*0.66, W*0.30, H*0.12); ctx.fillRect(W*0.26,H*0.60,W*0.06,H*0.10); } // sofa
+    if(c===2){ ctx.fillRect(W*0.30, H*0.62, W*0.40, H*0.07); ctx.fillRect(W*0.34,H*0.69,W*0.32,H*0.10); } // island + cabinets
+    if(c===3){ ctx.fillRect(W*0.30, H*0.64, W*0.40, H*0.14); ctx.fillRect(W*0.30,H*0.58,W*0.40,H*0.06);} // bed
+    if(c===4){ ctx.fillStyle="rgba(0,0,0,.45)"; for(let x=W*0.12;x<W*0.88;x+=26) ctx.fillRect(x,H*0.66,4,H*0.16); ctx.fillRect(W*0.12,H*0.64,W*0.76,5);} // railing
+  }
+  // vignette + bottom scrim for text
+  let vg2=ctx.createRadialGradient(W/2,H/2,H*0.3,W/2,H/2,H*0.8);
+  vg2.addColorStop(0,"rgba(0,0,0,0)"); vg2.addColorStop(1,"rgba(10,4,9,.45)");
+  ctx.fillStyle=vg2; ctx.fillRect(0,0,W,H);
+  // faint honest placeholder marker
+  ctx.fillStyle="rgba(255,255,255,.18)"; ctx.font="11px monospace"; ctx.textAlign="right";
+  ctx.fillText("PLACEHOLDER · frame "+(t!==undefined?"":""), W-12, H-12);
+}
+
+/* Build the preloaded frame sequence (returns array of HTMLImageElement). */
+function useFrameSequence(){
+  const framesRef = useRef([]);
+  const [loaded, setLoaded] = useState(0);
+  const [ready, setReady] = useState(false);
+  useEffect(()=>{
+    let cancelled=false;
+    const W=900, H=580;
+    const work=document.createElement("canvas"); work.width=W; work.height=H;
+    const wctx=work.getContext("2d");
+    const imgs=new Array(N_FRAMES);
+    let made=0;
+    // generate in chunks so the UI/preload bar stays responsive (simula carga progresiva)
+    function chunk(){
+      if(cancelled) return;
+      const end=Math.min(made+4, N_FRAMES);
+      for(let i=made;i<end;i++){
+        const p=i/(N_FRAMES-1), nc=CHAPTERS.length;
+        const c=Math.min(nc-1, Math.floor(p*nc)), t=(p*nc)-c;
+        drawScene(wctx,W,H,c,t);
+        const img=new Image();
+        img.onload=()=>{ if(cancelled) return; setLoaded(v=>{const nv=v+1; if(nv>=N_FRAMES) setReady(true); return nv;}); };
+        img.src=work.toDataURL("image/jpeg",0.82);   // REAL: precarga estilo secuencia de imágenes
+        imgs[i]=img;
+      }
+      made=end; framesRef.current=imgs;
+      if(made<N_FRAMES) setTimeout(chunk,16);
+    }
+    chunk();
+    return ()=>{cancelled=true;};
+  },[]);
+  return { framesRef, loaded, ready };
+}
+
+/* Detect a slow connection / data-saver → fallback to static image. (REAL) */
+function prefersStatic(){
+  const c = navigator.connection;
+  if(!c) return false;
+  return c.saveData===true || /(^|-)2g$/.test(c.effectiveType||"");
+}
+
+function App(){
+  const { framesRef, loaded, ready } = useFrameSequence();
+  const tourRef = useRef(null);
+  const canvasRef = useRef(null);
+  const lastIdx = useRef(-1);
+  const [chapter, setChapter] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [started, setStarted] = useState(false);   // user began scrolling
+  const [fallback] = useState(prefersStatic);
+  const [ctaOn, setCtaOn] = useState(false);
+
+  // ---- canvas sizing (DPR aware) ----
+  const fitCanvas = useCallback(()=>{
+    const cv=canvasRef.current; if(!cv) return;
+    const dpr=Math.min(window.devicePixelRatio||1, 2);
+    cv.width=Math.floor(window.innerWidth*dpr); cv.height=Math.floor(window.innerHeight*dpr);
+    lastIdx.current=-1; // force redraw
+  },[]);
+
+  // ---- draw a given frame (cover-fit) ----
+  const drawFrame = useCallback((idx)=>{
+    const cv=canvasRef.current, frames=framesRef.current; if(!cv||!frames[idx]) return;
+    const img=frames[idx]; if(!img.complete||!img.naturalWidth) return;
+    const ctx=cv.getContext("2d"); const CW=cv.width, CH=cv.height;
+    const s=Math.max(CW/img.naturalWidth, CH/img.naturalHeight);
+    const dw=img.naturalWidth*s, dh=img.naturalHeight*s;
+    ctx.drawImage(img,(CW-dw)/2,(CH-dh)/2,dw,dh);
+  },[]);
+
+  // ============================================================================
+  // SCROLL ENGINE (REAL) — frame index atado a la posición del scroll, vía rAF.
+  // Robusto al devolverse/repetir: el frame se deriva siempre del scroll actual,
+  // así que no hay "desincronización" posible.
+  // ============================================================================
+  useEffect(()=>{
+    fitCanvas();
+    let raf=0;
+    const onScroll=()=>{
+      if(raf) return;
+      raf=requestAnimationFrame(()=>{
+        raf=0;
+        const el=tourRef.current; if(!el) return;
+        const top=el.offsetTop, span=el.offsetHeight-window.innerHeight;
+        const p=Math.min(1,Math.max(0,(window.scrollY-top)/Math.max(1,span)));
+        setProgress(p);
+        if(p>0.01 && !started) setStarted(true);
+        const idx=Math.round(p*(N_FRAMES-1));
+        if(idx!==lastIdx.current){ lastIdx.current=idx; if(!fallback) drawFrame(idx); }
+        const nc=CHAPTERS.length;
+        const ch=Math.min(nc-1, Math.floor(p*nc));
+        setChapter(prev=> prev===ch? prev : ch);
+        // reveal CTA only after the tour is essentially complete (desire built)
+        setCtaOn(p>0.985);
+      });
+    };
+    window.addEventListener("scroll",onScroll,{passive:true});
+    window.addEventListener("resize",()=>{fitCanvas();onScroll();});
+    onScroll();
+    return ()=>window.removeEventListener("scroll",onScroll);
+  },[fallback,started,drawFrame,fitCanvas]);
+
+  // redraw current frame once the sequence finishes loading
+  useEffect(()=>{ if(ready && !fallback){ lastIdx.current=-1; drawFrame(Math.round(progress*(N_FRAMES-1))); } },[ready,fallback]); // eslint-disable-line
+
+  const tourHeight = `calc(${TOUR_SCREENS} * 100svh)`;
+
+  return (
+    <>
+      {/* ---- Preload overlay with progressive bar + fallback note ---- */}
+      <div className={"preload"+((ready||fallback)?" done":"")}>
+        <div className="preload__logo">PADS</div>
+        <div className="preload__bar"><div className="preload__fill" style={{width:(fallback?100:Math.round(loaded/N_FRAMES*100))+"%"}}/></div>
+        <div className="preload__pct">{fallback?"Modo ligero · imagen estática":"Preparando recorrido "+Math.round(loaded/N_FRAMES*100)+"%"}</div>
+      </div>
+
+      {/* ================= IMMERSIVE TOUR ================= */}
+      <section className="tour" ref={tourRef} style={{height:tourHeight}}>
+        <div className={"tour__sticky"+(fallback?" fallback":"")}>
+          <canvas ref={canvasRef} className="tour__canvas"/>
+          {/* Fallback static image if frames not ready / slow link (PLACEHOLDER poster) */}
+          <img className="tour__poster" alt="Penthouse en San Diego, Bogotá"
+               src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><rect width='8' height='8' fill='%231d1830'/></svg>"/>
+          <div className="tour__scrim"/>
+
+          <div className="tour__hud">
+            <div className="tour__brand">PADS</div>
+            <div className="dots">{CHAPTERS.map((_,i)=><i key={i} className={i===chapter?"on":""}/>)}</div>
+          </div>
+
+          {/* chapter micro-text, synced to frame */}
+          <div className="chap">
+            {CHAPTERS.map((c,i)=>(
+              <div key={c.key} className={"chap__item"+(i===chapter?" on":"")}>
+                <div className="chap__ey">{c.ey}</div>
+                <h2 className="chap__t">{c.title}</h2>
+                <p className="chap__sub">{c.sub}</p>
+                {c.data && <div className="chap__data">{c.data.map((d,j)=>(
+                  <div key={j}><b>{d[0]}</b><span>{d[1]}</span></div>
+                ))}</div>}
+              </div>
+            ))}
+          </div>
+
+          {!started && (
+            <div className="cue">
+              <span>Desliza para entrar</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ================= KORY — qualification ================= */}
+      <KorySection chapter={chapter}/>
+
+      {/* ================= SCHEDULE CTA (after desire) ================= */}
+      <section className="cta">
+        <div className={"cta__in"+(ctaOn?" on":"")}>
+          <div className="cta__ey">Ya la recorriste entera</div>
+          <h2>Te imaginas viviendo aquí.<br/><em>Demos el siguiente paso.</em></h2>
+          <p>La visita ya no es para descubrir: es para confirmar lo que sentiste. Tu asesor te acompaña en sitio o por video.</p>
+          <div className="cta__btns">
+            <button className="btn btn--magenta">Agendar visita de confirmación</button>
+            <button className="btn btn--ghost">Apartarla (reembolsable)</button>
+          </div>
+          <div className="cta__fine">Reserva 100% reembolsable · Verificado por PADS · Sin compromiso</div>
+        </div>
+      </section>
+      <footer className="foot">PADS · Prototipo de recorrido inmersivo · {PROPERTY.name}</footer>
+
+      {/* ================= BEHAVIOR HOOK ================= */}
+      <BehaviorHook chapter={chapter} progress={progress} started={started}/>
+    </>
+  );
+}
+
+/* ============================================================================
+   KORY — punto de calificación conversacional (MOCK, sin NLP/LLM).
+   Pregunta presupuesto, zona y motivación. Deja marcado el punto de inserción
+   donde un asistente real (LLM) tomaría el control.
+   ============================================================================ */
+const KORY_FLOW = [
+  { q:"Hola, soy Kory 👋 Te acompaño con este penthouse. Para afinarte la visita: ¿en qué rango de presupuesto te mueves?",
+    chips:["Hasta 1.000M","1.000–1.500M","Más de 1.500M"] },
+  { q:"Perfecto. ¿San Diego es tu zona, o estás abierto a otras del centro/oriente de Bogotá?",
+    chips:["San Diego fijo","Abierto a la zona","Aún explorando"] },
+  { q:"Última y agendamos: ¿esto es para vivir, para invertir o para arrendar?",
+    chips:["Para vivir","Inversión","Arriendo"] },
+];
+function KorySection({chapter}){
+  const [step,setStep]=useState(0);
+  const [msgs,setMsgs]=useState([{from:"bot",text:KORY_FLOW[0].q}]);
+  const [typing,setTyping]=useState(false);
+  const [done,setDone]=useState(false);
+  const [touched,setTouched]=useState(false);   // evita auto-scroll en el montaje
+  const endRef=useRef(null);
+  // keep latest message visible — pero SOLO una vez el usuario interactuó (si no,
+  // scrollIntoView arrastraría toda la página hasta el chat al cargar).
+  useEffect(()=>{ if(touched && endRef.current) endRef.current.scrollIntoView({block:"nearest",behavior:"smooth"}); },[msgs,typing,touched]);
+
+  function answer(text){
+    if(done) return;
+    setTouched(true);
+    setMsgs(m=>[...m,{from:"me",text}]);
+    const next=step+1;
+    setTyping(true);
+    // MOCK: respuesta scripted. ── PUNTO DE INSERCIÓN: aquí iría la llamada al
+    // asistente real (LLM) con el historial + señales del recorrido. ──
+    setTimeout(()=>{
+      setTyping(false);
+      if(next<KORY_FLOW.length){ setMsgs(m=>[...m,{from:"bot",text:KORY_FLOW[next].q}]); setStep(next); }
+      else { setMsgs(m=>[...m,{from:"bot",text:"Listo. Con eso, esta propiedad te calza. Te dejo agendar la visita de confirmación abajo 👇"}]); setDone(true); }
+    },800);
+  }
+  function onSubmit(e){ e.preventDefault(); const v=e.target.q.value.trim(); if(v){answer(v); e.target.reset();} }
+
+  return (
+    <section className="kory">
+      <div className="kory__wrap">
+        <div className="kory__head">
+          <div className="kory__ey">Antes de ir · 30 segundos</div>
+          <h2>Que la visita valga el viaje.</h2>
+        </div>
+        <div className="kory__panel">
+          <div className="msgs">
+            {msgs.map((m,i)=>(
+              <div key={i} className={"msg "+(m.from==="bot"?"msg--bot":"msg--me")}>
+                {m.from==="bot" && i===0 && (
+                  <div className="msg__who"><span className="msg__av">K</span><b>Kory</b><span>asistente PADS</span></div>
+                )}
+                {m.text}
+              </div>
+            ))}
+            {typing && <div className="typing"><i/><i/><i/></div>}
+            <div ref={endRef}/>
+          </div>
+          {!done && !typing && step<KORY_FLOW.length && (
+            <div className="chips">
+              {KORY_FLOW[step].chips.map(c=><button key={c} onClick={()=>answer(c)}>{c}</button>)}
+            </div>
+          )}
+          {!done && (
+            <form className="kory__form" onSubmit={onSubmit}>
+              <input name="q" placeholder="Escríbele a Kory…" autoComplete="off"/>
+              <button className="kory__send" type="submit" aria-label="Enviar">→</button>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============================================================================
+   BEHAVIOR HOOK  ── EL DIFERENCIADOR (mock pero con la lógica real marcada) ──
+   Detecta dwell (el usuario se detiene en un capítulo) o repeat (vuelve a un
+   capítulo ya visto) y dispara un nudge suave del asistente.
+
+   CONDICIÓN DE DISPARO (esto se extrae luego a la feature list):
+     • dwell:  permanecer > DWELL_MS en el mismo capítulo sin avanzar.
+     • repeat: entrar a un capítulo por 2ª vez (volvió a verlo).
+   Cada capítulo dispara su nudge una sola vez.
+   PUNTO DE INSERCIÓN backend: enviar {chapterKey, reason, dwellMs} a analytics /
+   al asistente real para decidir el mensaje y la siguiente mejor acción.
+   ============================================================================ */
+const DWELL_MS = 4500;          // umbral de "se detuvo"
+function BehaviorHook({chapter, progress, started}){
+  const enterTs=useRef(Date.now());
+  const visits=useRef({});
+  const firedRef=useRef({});
+  const [nudge,setNudge]=useState(null);   // {key, reason, text}
+
+  // count visits + reset dwell timer on chapter change; detect REPEAT
+  useEffect(()=>{
+    if(!started) return;
+    enterTs.current=Date.now();
+    const key=CHAPTERS[chapter].key;
+    visits.current[key]=(visits.current[key]||0)+1;
+    if(visits.current[key]>=2 && !firedRef.current[key]){
+      fire(key,"repeat");
+    }
+  },[chapter,started]); // eslint-disable-line
+
+  // dwell watcher
+  useEffect(()=>{
+    if(!started) return;
+    const id=setInterval(()=>{
+      const key=CHAPTERS[chapter].key;
+      if(!firedRef.current[key] && Date.now()-enterTs.current>DWELL_MS && progress<0.985){
+        fire(key,"dwell");
+      }
+    },1000);
+    return ()=>clearInterval(id);
+  },[chapter,progress,started]);
+
+  function fire(key,reason){
+    if(firedRef.current[key]) return;
+    firedRef.current[key]=true;
+    const ch=CHAPTERS.find(c=>c.key===key);
+    // ── here a real impl would POST {key,reason,dwellMs} and get the message ──
+    setNudge({key,reason,text:ch.nudge});
+    if(window.__padsTrack) window.__padsTrack("nudge",{key,reason}); // analytics stub
+  }
+  function go(){ setNudge(null); document.querySelector(".kory").scrollIntoView({behavior:"smooth"}); }
+
+  return (
+    <div className={"nudge"+(nudge?" show":"")} role="status" aria-live="polite">
+      {nudge && <>
+        <div className="nudge__av">K</div>
+        <div className="nudge__b">
+          <small>Kory · {nudge.reason==="repeat"?"volviste a esta sección":"te detuviste aquí"}</small>
+          <p>{nudge.text}</p>
+          <div className="nudge__act">
+            <button className="nudge__yes" onClick={go}>Sí, cuéntame</button>
+            <button className="nudge__no" onClick={()=>setNudge(null)}>Ahora no</button>
+          </div>
+        </div>
+        <button className="nudge__x" aria-label="Cerrar" onClick={()=>setNudge(null)}>✕</button>
+      </>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
